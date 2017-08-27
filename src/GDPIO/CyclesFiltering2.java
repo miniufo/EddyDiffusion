@@ -77,10 +77,10 @@ public final class CyclesFiltering2{
 		
 		int pos=0;
 		for(Particle p:ls){
-			float[] uvel=p.getZonalVelocity();
-			float[] vvel=p.getMeridionalVelocity();
-			float[] lons=p.getLongitudes();
-			float[] lats=p.getLatitudes();
+			float[] uvel=p.getUVel();
+			float[] vvel=p.getVVel();
+			float[] lons=p.getXPositions();
+			float[] lats=p.getYPositions();
 			
 			for(int l=0,L=uvel.length;l<L;l++){
 				int jtag=template.getYNum(lats[l]);

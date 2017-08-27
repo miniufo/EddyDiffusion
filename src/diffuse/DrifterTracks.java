@@ -61,8 +61,8 @@ public final class DrifterTracks{
 		
 		for(GDPDrifter dr:all)
 		for(int l=0,L=dr.getTCount();l<L;l++){
-			float lon=dr.getLongitude(l);
-			float lat=dr.getLatitude(l);
+			float lon=dr.getXPosition(l);
+			float lat=dr.getYPosition(l);
 			long time=dr.getTime(l);	// 2002 0304 000000
 			
 			boolean inT=time/100000000L%100==month;
@@ -78,8 +78,8 @@ public final class DrifterTracks{
 		
 		for(GDPDrifter dr:all)
 		for(int l=0,L=dr.getTCount();l<L;l++){
-			float lon=dr.getLongitude(l);
-			float lat=dr.getLatitude(l);
+			float lon=dr.getXPosition(l);
+			float lat=dr.getYPosition(l);
 			
 			if(r.inRange(lon,lat)){ re.add(dr); break;}
 		}

@@ -39,10 +39,10 @@ public final class DrifterTracks{
 		
 		for(GDPDrifter dr:all){
 			 long[] date=dr.getTimes();
-			float[] lons=dr.getLongitudes();
-			float[] lats=dr.getLatitudes();
-			float[] ucur=dr.getZonalVelocity();
-			float[] vcur=dr.getMeridionalVelocity();
+			float[] lons=dr.getXPositions();
+			float[] lats=dr.getYPositions();
+			float[] ucur=dr.getUVel();
+			float[] vcur=dr.getVVel();
 			
 			for(int l=0,L=lons.length;l<L;l++) if(date[l]>=20140101000000L)
 			sb.append(String.format("%d %8.3f %8.3f %10.5f %10.5f\n",date[l],lons[l],lats[l],ucur[l],vcur[l]));

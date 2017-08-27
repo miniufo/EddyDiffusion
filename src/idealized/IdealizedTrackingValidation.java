@@ -199,7 +199,7 @@ public final class IdealizedTrackingValidation{
 		
 		LagrangianStatisticsByDavis lstat=new LagrangianStatisticsByDavis(ps,dd);
 		
-		Predicate<Record> cond=r->region.inRange(r.getLon(),r.getLat());
+		Predicate<Record> cond=r->region.inRange(r.getXPos(),r.getYPos());
 		
 		LagrangianStatResult r1=lstat.cStatisticsByDavisTheory1(cond,tRad);
 		LagrangianStatResult r2=lstat.cStatisticsByDavisTheory2(cond,tRad);

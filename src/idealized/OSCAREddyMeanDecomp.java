@@ -176,8 +176,8 @@ public final class OSCAREddyMeanDecomp{
 					Record r=dftr.getRecord(ll);
 					
 					if(r.getTime()==time){
-						float lon=r.getLon();
-						float lat=r.getLat();
+						float lon=r.getXPos();
+						float lat=r.getYPos();
 						
 						float urec=gdsU.fetchXYBuffer(lon,lat,bufU);
 						float vrec=gdsV.fetchXYBuffer(lon,lat,bufV);

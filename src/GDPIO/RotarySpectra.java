@@ -100,7 +100,7 @@ public final class RotarySpectra{
 			
 			if(drs!=null)
 			for(GDPDrifter drr:drs){
-				float[] uvel=drr.getZonalVelocity();
+				float[] uvel=drr.getUVel();
 				
 				boolean hasUndef=false;
 				
@@ -144,8 +144,8 @@ public final class RotarySpectra{
 		int cc=0;
 		
 		for(int l=0,L=dr.getTCount();l<L;l++){
-			float lon=dr.getLongitude(l);
-			float lat=dr.getLatitude(l);
+			float lon=dr.getXPosition(l);
+			float lat=dr.getYPosition(l);
 			
 			if(lon>=lons&&lon<=lone&&lat>=lats&&lat<=late) cc++;
 		}

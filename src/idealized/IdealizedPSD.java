@@ -135,7 +135,7 @@ public final class IdealizedPSD{
 			
 			if(drs!=null)
 			for(Particle drr:drs){
-				float[] uvel=drr.getZonalVelocity();
+				float[] uvel=drr.getUVel();
 				
 				boolean hasUndef=false;
 				for(int l=0;l<drr.getTCount();l++)

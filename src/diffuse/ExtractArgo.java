@@ -57,12 +57,12 @@ public class ExtractArgo{
 				int count=0;
 				for(int l=0,L=af.getTCount();l<L;l++){
 					long time=af.getTime(l);
-					float lon=af.getLongitude(l);
-					float lat=af.getLatitude(l);
+					float lon=af.getXPosition(l);
+					float lat=af.getYPosition(l);
 					
 					for(int ll=0,LL=tr.getTCount();ll<LL;ll++)
 					if(Math.abs(time-tr.getTime(ll))<30000
-					&&SpatialModel.cSphericalDistanceByDegree(lon,lat,tr.getLongitude(ll),tr.getLatitude(ll))<600000){
+					&&SpatialModel.cSphericalDistanceByDegree(lon,lat,tr.getXPosition(ll),tr.getYPosition(ll))<600000){
 						buf.append(af.getRecord(l)+"   "+af.getRecord(l).getCycleNum());
 						buf.append("\n");
 						count++;

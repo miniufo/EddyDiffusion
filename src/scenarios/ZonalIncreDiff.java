@@ -63,7 +63,7 @@ public final class ZonalIncreDiff{
 	static final Function<Record,StochasticParams> mapping=r->{
 		int orderOfModel=order;
 		
-		float lon=r.getLon();
+		float lon=r.getXPos();
 		float rlon=(xnum-1)/2*resolution;
 		
 		float Diffxx=1000+(50-1)*1000*(lon-(olon-rlon))/(rlon*2f);
@@ -236,7 +236,7 @@ public final class ZonalIncreDiff{
 		System.out.println("\nLagrangian Statistics...");
 		LagrangianStatisticsByDavis lstat=new LagrangianStatisticsByDavis(ps,dd);
 		
-		Predicate<Record> cond=r->region.inRange(r.getLon(),r.getLat());
+		Predicate<Record> cond=r->region.inRange(r.getXPos(),r.getYPos());
 		
 		lstat.cStatisticsByDavisTheory1(cond,tRad).toFile(path+"Diff/Lstat1_o"+order+".txt");
 		lstat.cStatisticsByDavisTheory2(cond,tRad).toFile(path+"Diff/Lstat2_o"+order+".txt");

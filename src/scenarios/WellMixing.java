@@ -70,8 +70,8 @@ public final class WellMixing{
 	static final Function<Record,StochasticParams> mapping=r->{
 		int orderOfModel=order;
 		
-		float lon=r.getLon();
-		float lat=r.getLat();
+		float lon=r.getXPos();
+		float lat=r.getYPos();
 		
 		float kxx =gdf.fetchXYBuffer(lon,lat,kxxBuf );
 		float kxxx=gdf.fetchXYBuffer(lon,lat,kxxxBuf);

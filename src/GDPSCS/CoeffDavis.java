@@ -61,13 +61,13 @@ public class CoeffDavis{
 		
 		LagrangianStatisticsByDavis lstat=new LagrangianStatisticsByDavis(ls,dd);
 		
-		LagrangianStatResult r1=lstat.cStatisticsByDavisTheory1(r->regions[0].inRange(r.getLon(),r.getLat()), 60);
-		LagrangianStatResult r2=lstat.cStatisticsByDavisTheory1(r->regions[1].inRange(r.getLon(),r.getLat()), 60);
-		LagrangianStatResult r3=lstat.cStatisticsByDavisTheory1(r->regions[2].inRange(r.getLon(),r.getLat()), 60);
-		LagrangianStatResult r4=lstat.cStatisticsByDavisTheory1(r->regions[3].inRange(r.getLon(),r.getLat()), 60);
-		LagrangianStatResult r5=lstat.cStatisticsByDavisTheory1(r->regions[4].inRange(r.getLon(),r.getLat()), 60);
-		LagrangianStatResult r6=lstat.cStatisticsByDavisTheory1(r->regions[5].inRange(r.getLon(),r.getLat()), 60);
-		LagrangianStatResult r7=lstat.cStatisticsByDavisTheory1(r->regions[6].inRange(r.getLon(),r.getLat()), 60);
+		LagrangianStatResult r1=lstat.cStatisticsByDavisTheory1(r->regions[0].inRange(r.getXPos(),r.getYPos()), 60);
+		LagrangianStatResult r2=lstat.cStatisticsByDavisTheory1(r->regions[1].inRange(r.getXPos(),r.getYPos()), 60);
+		LagrangianStatResult r3=lstat.cStatisticsByDavisTheory1(r->regions[2].inRange(r.getXPos(),r.getYPos()), 60);
+		LagrangianStatResult r4=lstat.cStatisticsByDavisTheory1(r->regions[3].inRange(r.getXPos(),r.getYPos()), 60);
+		LagrangianStatResult r5=lstat.cStatisticsByDavisTheory1(r->regions[4].inRange(r.getXPos(),r.getYPos()), 60);
+		LagrangianStatResult r6=lstat.cStatisticsByDavisTheory1(r->regions[5].inRange(r.getXPos(),r.getYPos()), 60);
+		LagrangianStatResult r7=lstat.cStatisticsByDavisTheory1(r->regions[6].inRange(r.getXPos(),r.getYPos()), 60);
 		
 		r1.toFile(path+"Region1.txt");
 		r2.toFile(path+"Region2.txt");

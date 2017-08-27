@@ -119,7 +119,7 @@ public final class PowerSpectra{
 			
 			if(drs!=null)
 			for(GDPDrifter drr:drs){
-				float[] uvel=drr.getZonalVelocity();
+				float[] uvel=drr.getUVel();
 				
 				boolean hasUndef=false;
 				for(int l=0;l<drr.getTCount();l++)
@@ -162,8 +162,8 @@ public final class PowerSpectra{
 		int cc=0;
 		
 		for(int l=0,L=dr.getTCount();l<L;l++){
-			float lon=dr.getLongitude(l);
-			float lat=dr.getLatitude(l);
+			float lon=dr.getXPosition(l);
+			float lat=dr.getYPosition(l);
 			
 			if(lon>=lons&&lon<=lone&&lat>=lats&&lat<=late) cc++;
 		}

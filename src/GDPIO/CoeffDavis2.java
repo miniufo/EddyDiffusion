@@ -54,7 +54,7 @@ public final class CoeffDavis2{
 		for(int i=0;i<regions.length;i++){
 			final int itag=i;
 			
-			Predicate<Record> cond=r->regions[itag].inRange(r.getLon(),r.getLat());
+			Predicate<Record> cond=r->regions[itag].inRange(r.getXPos(),r.getYPos());
 			
 			r1[i]=lstat.cStatisticsByDavisTheory1(cond,tRad);
 			r2[i]=lstat.cStatisticsByDavisTheory2(cond,tRad);

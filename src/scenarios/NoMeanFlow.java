@@ -187,7 +187,7 @@ public final class NoMeanFlow{
 		//long str=ps.get(0).getRecord(0).getTime();
 		
 		//Predicate<Record>   truetrack=r->{return region.inRange(r.getLon(),r.getLat())&&r.getTime()==str;};
-		Predicate<Record> pseudotrack=r->{return region.inRange(r.getLon(),r.getLat());};
+		Predicate<Record> pseudotrack=r->{return region.inRange(r.getXPos(),r.getYPos());};
 		
 		lstat.cStatisticsByDavisTheory1(pseudotrack,tRad).toFile(path+"Diff/"+region.getName()+"1_o"+order+"pseudo.txt");
 		lstat.cStatisticsByDavisTheory2(pseudotrack,tRad).toFile(path+"Diff/"+region.getName()+"2_o"+order+"pseudo.txt");

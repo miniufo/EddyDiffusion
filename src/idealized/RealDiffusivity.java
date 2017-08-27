@@ -239,7 +239,7 @@ public final class RealDiffusivity{
 		System.out.println("Lagrangian Statistics...");
 		LagrangianStatisticsByDavis lstat=new LagrangianStatisticsByDavis(ps,template);
 		
-		Predicate<Record> cond=r->region.inRange(r.getLon(),r.getLat());
+		Predicate<Record> cond=r->region.inRange(r.getXPos(),r.getYPos());
 		
 		lstat.cStatisticsByDavisTheory1(cond,tRad).toFile(path+"Idealized/Real/Lstat"+tag+m+"1.txt");
 		lstat.cStatisticsByDavisTheory2(cond,tRad).toFile(path+"Idealized/Real/Lstat"+tag+m+"2.txt");

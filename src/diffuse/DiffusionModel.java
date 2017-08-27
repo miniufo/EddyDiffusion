@@ -266,8 +266,8 @@ public final class DiffusionModel{
 		for(int l=0,L=dr.getTCount();l<L;l++){
 			Record r=dr.getRecord(l);
 			
-			float lon=r.getLon();
-			float lat=r.getLat();
+			float lon=r.getXPos();
+			float lat=r.getYPos();
 			
 			if(region.inRange(lon,lat)){
 				remove.add(dr);
@@ -362,8 +362,8 @@ public final class DiffusionModel{
 					Record r=dftr.getRecord(ll);
 					
 					if(r.getTime()==time){
-						float lon=r.getLon();
-						float lat=r.getLat();
+						float lon=r.getXPos();
+						float lat=r.getYPos();
 						
 						for(int m=0;m<vlen;m++){
 							float data=gds[m].fetchXYBuffer(lon,lat,bufs[m]);
@@ -395,7 +395,7 @@ public final class DiffusionModel{
 				float uwind=r.getDataValue(4);
 				float vwind=r.getDataValue(5);
 				
-				float[] ek=cEkmanCurrent(uwind,vwind,r.getLat());
+				float[] ek=cEkmanCurrent(uwind,vwind,r.getYPos());
 				
 				r.setData(6,ek[0]);
 				r.setData(7,ek[1]);
@@ -434,8 +434,8 @@ public final class DiffusionModel{
 					Record r=dftr.getRecord(ll);
 					
 					if(r.getTime()==time){
-						float lon=r.getLon();
-						float lat=r.getLat();
+						float lon=r.getXPos();
+						float lat=r.getYPos();
 						
 						float uwind=gdsU.fetchXYBuffer(lon,lat,bufU);
 						float vwind=gdsV.fetchXYBuffer(lon,lat,bufV);
@@ -518,8 +518,8 @@ public final class DiffusionModel{
 			for(int l=0,L=dr.getTCount();l<L;l++){
 				Record r=dr.getRecord(l);
 				
-				int itag=dd.getXNum(r.getLon());
-				int jtag=dd.getYNum(r.getLat());
+				int itag=dd.getXNum(r.getXPos());
+				int jtag=dd.getYNum(r.getYPos());
 				
 				float u=r.getDataValue(0);
 				float v=r.getDataValue(1);
@@ -662,8 +662,8 @@ public final class DiffusionModel{
 		sb.append("'d lsmask'\n\n");
 		
 		for(Particle p:ls){
-			float lon=p.getLongitude(0);
-			float lat=p.getLatitude(0);
+			float lon=p.getXPosition(0);
+			float lat=p.getYPosition(0);
 			
 			if(r.inRange(lon,lat)){
 				p.toTrajectoryFile(path);
@@ -710,8 +710,8 @@ public final class DiffusionModel{
 		for(int l=0,L=dr.getTCount();l<L;l++){
 			Record r=dr.getRecord(l);
 			
-			int itag=dd.getXNum(r.getLon());
-			int jtag=dd.getYNum(r.getLat());
+			int itag=dd.getXNum(r.getXPos());
+			int jtag=dd.getYNum(r.getYPos());
 			
 			cdata[jtag][itag]++;
 		}
@@ -726,8 +726,8 @@ public final class DiffusionModel{
 		for(int l=0,L=dr.getTCount();l<L;l++){
 			Record r=dr.getRecord(l);
 			
-			int itag=dd.getXNum(r.getLon());
-			int jtag=dd.getYNum(r.getLat());
+			int itag=dd.getXNum(r.getXPos());
+			int jtag=dd.getYNum(r.getYPos());
 			int ltag=ptrs[jtag][itag];
 			
 			rs[jtag][itag][ltag]=r;

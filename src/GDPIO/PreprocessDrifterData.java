@@ -169,8 +169,8 @@ public final class PreprocessDrifterData{
 			
 			float u=r.getDataValue(0);
 			float v=r.getDataValue(1);
-			float lon=r.getLon();
-			float lat=r.getLat();
+			float lon=r.getXPos();
+			float lat=r.getYPos();
 			
 			uc.append(u+"\n");
 			vc.append(v+"\n");

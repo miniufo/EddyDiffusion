@@ -69,10 +69,10 @@ public class EddySpeedPDF{
 		for(Particle p:ls){
 			//int count=p.getTCount();
 			
-			float[] uvel=p.getZonalVelocity();
-			float[] vvel=p.getMeridionalVelocity();
-			float[] lons=p.getLongitudes();
-			float[] lats=p.getLatitudes();
+			float[] uvel=p.getUVel();
+			float[] vvel=p.getVVel();
+			float[] lons=p.getXPositions();
+			float[] lats=p.getYPositions();
 			
 			for(int l=0,L=uvel.length;l<L;l++)
 			if(uvel[l]!=Record.undef){
@@ -97,8 +97,8 @@ public class EddySpeedPDF{
 	static void smoothData(List<? extends Particle> ls){
 		for(Particle p:ls)
 		if(p.getTCount()>=smooth){
-			float[] uvelOrig=p.getZonalVelocity();
-			float[] vvelOrig=p.getMeridionalVelocity();
+			float[] uvelOrig=p.getUVel();
+			float[] vvelOrig=p.getVVel();
 			float[] uvelSmth=new float[uvelOrig.length];
 			float[] vvelSmth=new float[vvelOrig.length];
 			

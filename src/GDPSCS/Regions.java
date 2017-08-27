@@ -123,8 +123,8 @@ public class Regions{
 			
 			Record r=p.getRecord(p.getMedianIndex());
 			
-			pos[0][i]=r.getLon();
-			pos[1][i]=r.getLat();
+			pos[0][i]=r.getXPos();
+			pos[1][i]=r.getYPos();
 		}
 		
 		List<Particle> ls=new ArrayList<Particle>();
