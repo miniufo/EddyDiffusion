@@ -4,13 +4,12 @@ package scenarios;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
-
 import diffuse.DiffusionModel;
 import miniufo.application.basic.DynamicMethodsInSC;
+import miniufo.application.statisticsModel.BinningStatistics;
 import miniufo.application.statisticsModel.EulerianStatistics;
 import miniufo.application.statisticsModel.LagrangianStatisticsByDavis;
 import miniufo.basic.ArrayUtil;
-import miniufo.database.DataBaseUtil;
 import miniufo.descriptor.DataDescriptor;
 import miniufo.diagnosis.DiagnosisFactory;
 import miniufo.diagnosis.Range;
@@ -215,7 +214,7 @@ public final class ZonalIncreDiff{
 		
 		EulerianStatistics estat=new EulerianStatistics(ps,dd,false);
 		
-		Variable[] count=new Variable[]{DataBaseUtil.binningCount(ddT,ps)};
+		Variable[] count=new Variable[]{new BinningStatistics(ddT).binningCount(ps)};
 		Variable[] arrb=estat.cConcentrationAndArrayBias(new float[][]{{20000,0},{0,10000}},ddT);
 		
 		DataWrite dw=DataIOFactory.getDataWrite(ddT,path+"Estat"+order+".dat");

@@ -5,14 +5,13 @@ import java.io.FileWriter;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
-
 import diffuse.DiffusionModel;
+import miniufo.application.statisticsModel.BinningStatistics;
 import miniufo.application.statisticsModel.EulerianStatistics;
-import miniufo.application.statisticsModel.LagrangianStatResult;
+import miniufo.application.statisticsModel.SingleParticleStatResult;
 import miniufo.application.statisticsModel.LagrangianStatisticsByDavis;
 import miniufo.basic.ArrayUtil;
 import miniufo.concurrent.ConcurrentUtil;
-import miniufo.database.DataBaseUtil;
 import miniufo.descriptor.DataDescriptor;
 import miniufo.diagnosis.DiagnosisFactory;
 import miniufo.diagnosis.Range;
@@ -157,7 +156,7 @@ public final class IdealizedTrackingValidation{
 		DataDescriptor dd=DiagnosisFactory.parseContent(EulerCTL).getDataDescriptor();
 		
 		EulerianStatistics estat=new EulerianStatistics(ps,dd,false);
-		Variable[] count=new Variable[]{DataBaseUtil.binningCount(dd,ps)};
+		Variable[] count=new Variable[]{new BinningStatistics(dd).binningCount(ps)};
 		Variable[] mean=estat.cMeansOfBins();
 		Variable[] bias=estat.cSeasonalSamplingBias();
 		
@@ -201,8 +200,8 @@ public final class IdealizedTrackingValidation{
 		
 		Predicate<Record> cond=r->region.inRange(r.getXPos(),r.getYPos());
 		
-		LagrangianStatResult r1=lstat.cStatisticsByDavisTheory1(cond,tRad);
-		LagrangianStatResult r2=lstat.cStatisticsByDavisTheory2(cond,tRad);
+		SingleParticleStatResult r1=lstat.cStatisticsByDavisTheory1(cond,tRad);
+		SingleParticleStatResult r2=lstat.cStatisticsByDavisTheory2(cond,tRad);
 		
 		r1.toFile(path+"lstat"+fname+"1.txt");
 		r2.toFile(path+"lstat"+fname+"2.txt");

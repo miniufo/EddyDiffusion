@@ -59,10 +59,10 @@ public final class EKEDroguedUndrogued{
 	
 	static void writeData2D(DataDescriptor dd,float[][] data,float[][] count,String path){
 		try(BufferedWriter br=new BufferedWriter(new FileWriter(path))){
-			float lon1=IO.getLonMin();
-			float lon2=IO.getLonMax();
-			float lat1=IO.getLatMin();
-			float lat2=IO.getLatMax();
+			float lon1=IO.getXMin();
+			float lon2=IO.getXMax();
+			float lat1=IO.getYMin();
+			float lat2=IO.getYMax();
 			
 			for(int j=dd.getYNum(lat1),I=dd.getXNum(lon2),J=dd.getYNum(lat2);j<=J;j++){
 				for(int i=dd.getXNum(lon1);i<I;i++)

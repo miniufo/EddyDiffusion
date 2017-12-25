@@ -4,7 +4,7 @@ package GDPSCS;
 import java.util.List;
 import diffuse.DiffusionModel;
 import miniufo.application.statisticsModel.EulerianStatistics;
-import miniufo.application.statisticsModel.LagrangianStatResult;
+import miniufo.application.statisticsModel.SingleParticleStatResult;
 import miniufo.application.statisticsModel.LagrangianStatisticsByDavis;
 import miniufo.concurrent.ConcurrentUtil;
 import miniufo.descriptor.DataDescriptor;
@@ -61,13 +61,13 @@ public class CoeffDavis{
 		
 		LagrangianStatisticsByDavis lstat=new LagrangianStatisticsByDavis(ls,dd);
 		
-		LagrangianStatResult r1=lstat.cStatisticsByDavisTheory1(r->regions[0].inRange(r.getXPos(),r.getYPos()), 60);
-		LagrangianStatResult r2=lstat.cStatisticsByDavisTheory1(r->regions[1].inRange(r.getXPos(),r.getYPos()), 60);
-		LagrangianStatResult r3=lstat.cStatisticsByDavisTheory1(r->regions[2].inRange(r.getXPos(),r.getYPos()), 60);
-		LagrangianStatResult r4=lstat.cStatisticsByDavisTheory1(r->regions[3].inRange(r.getXPos(),r.getYPos()), 60);
-		LagrangianStatResult r5=lstat.cStatisticsByDavisTheory1(r->regions[4].inRange(r.getXPos(),r.getYPos()), 60);
-		LagrangianStatResult r6=lstat.cStatisticsByDavisTheory1(r->regions[5].inRange(r.getXPos(),r.getYPos()), 60);
-		LagrangianStatResult r7=lstat.cStatisticsByDavisTheory1(r->regions[6].inRange(r.getXPos(),r.getYPos()), 60);
+		SingleParticleStatResult r1=lstat.cStatisticsByDavisTheory1(r->regions[0].inRange(r.getXPos(),r.getYPos()), 60);
+		SingleParticleStatResult r2=lstat.cStatisticsByDavisTheory1(r->regions[1].inRange(r.getXPos(),r.getYPos()), 60);
+		SingleParticleStatResult r3=lstat.cStatisticsByDavisTheory1(r->regions[2].inRange(r.getXPos(),r.getYPos()), 60);
+		SingleParticleStatResult r4=lstat.cStatisticsByDavisTheory1(r->regions[3].inRange(r.getXPos(),r.getYPos()), 60);
+		SingleParticleStatResult r5=lstat.cStatisticsByDavisTheory1(r->regions[4].inRange(r.getXPos(),r.getYPos()), 60);
+		SingleParticleStatResult r6=lstat.cStatisticsByDavisTheory1(r->regions[5].inRange(r.getXPos(),r.getYPos()), 60);
+		SingleParticleStatResult r7=lstat.cStatisticsByDavisTheory1(r->regions[6].inRange(r.getXPos(),r.getYPos()), 60);
 		
 		r1.toFile(path+"Region1.txt");
 		r2.toFile(path+"Region2.txt");

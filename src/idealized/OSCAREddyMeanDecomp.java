@@ -4,10 +4,10 @@ package idealized;
 import java.util.List;
 import diffuse.DiffusionModel;
 import diffuse.DiffusionModel.Method;
+import miniufo.application.statisticsModel.BinningStatistics;
 import miniufo.application.statisticsModel.EulerianStatistics;
 import miniufo.basic.ArrayUtil;
 import miniufo.concurrent.ConcurrentUtil;
-import miniufo.database.DataBaseUtil;
 import miniufo.descriptor.DataDescriptor;
 import miniufo.diagnosis.DiagnosisFactory;
 import miniufo.diagnosis.Variable;
@@ -48,7 +48,7 @@ public final class OSCAREddyMeanDecomp{
 			System.out.println("\n using binning ("+template.getDXDef()[0]+"-deg) method...");
 			
 			EulerianStatistics estat=new EulerianStatistics(all,template,false);
-			Variable[] count=new Variable[]{DataBaseUtil.binningCount(template,all)};
+			Variable[] count=new Variable[]{new BinningStatistics(template).binningCount(all)};
 			Variable[] emean=estat.cMeansOfBins();
 			Variable[] sbias=estat.cSeasonalSamplingBias();
 			Variable[] abias=estat.cConcentrationAndArrayBias(new float[][]{{20000,0},{0,10000}});
@@ -65,7 +65,7 @@ public final class OSCAREddyMeanDecomp{
 			System.out.println("\n using seasonal method with "+DiffusionModel.season2.length+" seasons...");
 			
 			EulerianStatistics estat=new EulerianStatistics(all,template,false);
-			Variable[] count=new Variable[]{DataBaseUtil.binningCount(template,all)};
+			Variable[] count=new Variable[]{new BinningStatistics(template).binningCount(all)};
 			Variable[] emean=estat.cMeansOfBins();
 			Variable[] sbias=estat.cSeasonalSamplingBias();
 			Variable[] abias=estat.cConcentrationAndArrayBias(new float[][]{{20000,0},{0,10000}});
@@ -84,7 +84,7 @@ public final class OSCAREddyMeanDecomp{
 			System.out.println("\n using seasonal method with "+DiffusionModel.season4.length+" seasons...");
 			
 			EulerianStatistics estat=new EulerianStatistics(all,template,false);
-			Variable[] count=new Variable[]{DataBaseUtil.binningCount(template,all)};
+			Variable[] count=new Variable[]{new BinningStatistics(template).binningCount(all)};
 			Variable[] emean=estat.cMeansOfBins();
 			Variable[] sbias=estat.cSeasonalSamplingBias();
 			Variable[] abias=estat.cConcentrationAndArrayBias(new float[][]{{20000,0},{0,10000}});
@@ -103,7 +103,7 @@ public final class OSCAREddyMeanDecomp{
 			System.out.println("\n using GM method with TL="+TL+" days...");
 			
 			EulerianStatistics estat=new EulerianStatistics(all,template,false);
-			Variable[] count=new Variable[]{DataBaseUtil.binningCount(template,all)};
+			Variable[] count=new Variable[]{new BinningStatistics(template).binningCount(all)};
 			Variable[] emean=estat.cMeansOfBins();
 			Variable[] sbias=estat.cSeasonalSamplingBias();
 			Variable[] abias=estat.cConcentrationAndArrayBias(new float[][]{{20000,0},{0,10000}});
@@ -122,7 +122,7 @@ public final class OSCAREddyMeanDecomp{
 			System.out.println("\n using GM2 method with TL="+TL+" days...");
 			
 			EulerianStatistics estat=new EulerianStatistics(all,template,true);
-			Variable[] count=new Variable[]{DataBaseUtil.binningCount(template,all)};
+			Variable[] count=new Variable[]{new BinningStatistics(template).binningCount(all)};
 			Variable[] emean=estat.cMeansOfBins();
 			Variable[] sbias=estat.cSeasonalSamplingBias();
 			Variable[] abias=estat.cConcentrationAndArrayBias(new float[][]{{20000,0},{0,10000}});
@@ -141,7 +141,7 @@ public final class OSCAREddyMeanDecomp{
 			System.out.println("\n using GM3 method with TL="+TL+" days...");
 			
 			EulerianStatistics estat=new EulerianStatistics(all,template,true);
-			Variable[] count=new Variable[]{DataBaseUtil.binningCount(template,all)};
+			Variable[] count=new Variable[]{new BinningStatistics(template).binningCount(all)};
 			Variable[] emean=estat.cMeansOfBins();
 			Variable[] sbias=estat.cSeasonalSamplingBias();
 			Variable[] abias=estat.cConcentrationAndArrayBias(new float[][]{{20000,0},{0,10000}});
@@ -168,8 +168,8 @@ public final class OSCAREddyMeanDecomp{
 			for(int l=0,L=dd.getTCount();l<L;l++){
 				long time=dd.getTDef().getSamples()[l].getLongTime();
 				
-				float[][] bufU=gdsU.prepareXYBuffer("urec",l+1,1);
-				float[][] bufV=gdsV.prepareXYBuffer("vrec",l+1,1);
+				Variable bufU=gdsU.prepareXYBuffer("urec",l+1,1);
+				Variable bufV=gdsV.prepareXYBuffer("vrec",l+1,1);
 				
 				for(Particle dftr:all)
 				for(int ll=0,LL=dftr.getTCount();ll<LL;ll++){

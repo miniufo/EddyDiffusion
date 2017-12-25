@@ -4,11 +4,10 @@ package GDPSCS;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.List;
-
 import diffuse.DiffusionModel;
+import miniufo.application.statisticsModel.BinningStatistics;
 import miniufo.application.statisticsModel.EulerianStatistics;
 import miniufo.concurrent.ConcurrentUtil;
-import miniufo.database.DataBaseUtil;
 import miniufo.descriptor.DataDescriptor;
 import miniufo.diagnosis.DiagnosisFactory;
 import miniufo.diagnosis.Variable;
@@ -66,14 +65,16 @@ public class Mean{
 		
 		EulerianStatistics estat=new EulerianStatistics(ls,template,true);
 		
+		BinningStatistics bs=new BinningStatistics(template);
+		
 		Variable[] current=estat.cMeansOfBins();
 		Variable[] stdcurr=estat.cSTDsOfBins();
 		Variable[] seasBias=estat.cSeasonalSamplingBias();
 		Variable[][] amps =estat.cCycleAmplitudesAndPhases(new float[]{1,2},1f/365f);
 		Variable[] ellipse=estat.cVarianceEllipse();
-		Variable v=DataBaseUtil.binningCount(template,ls);
-		Variable[] seasonal=concatAll(Variable.class,DataBaseUtil.binningSeasonalData(template,ls,true,seasons,0,1));
-		Variable[] seaCount=DataBaseUtil.binningSeasonalCount(template,ls,seasons);
+		Variable v=bs.binningCount(ls);
+		Variable[] seasonal=concatAll(Variable.class,bs.binningSeasonalData(ls,seasons,0,1));
+		Variable[] seaCount=bs.binningSeasonalCount(ls,seasons);
 		
 		estat.removeMeansOfBins();
 		Variable EKE=estat.cEKE();
@@ -184,10 +185,10 @@ public class Mean{
 		try{
 			BufferedWriter br=new BufferedWriter(new FileWriter(path));
 			
-			float lon1=SCS.getLonMin();
-			float lon2=SCS.getLonMax();
-			float lat1=SCS.getLatMin();
-			float lat2=SCS.getLatMax();
+			float lon1=SCS.getXMin();
+			float lon2=SCS.getXMax();
+			float lat1=SCS.getYMin();
+			float lat2=SCS.getYMax();
 			
 			for(int j=dd.getYNum(lat1),I=dd.getXNum(lon2),J=dd.getYNum(lat2);j<=J;j++){
 				for(int i=dd.getXNum(lon1);i<I;i++)

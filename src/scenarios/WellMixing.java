@@ -62,10 +62,10 @@ public final class WellMixing{
 	
 	static final GridDataFetcher gdf=new GridDataFetcher(DiagnosisFactory.parseFile(path+"DiffGrd.ctl").getDataDescriptor());
 	
-	static final float[][] kxxBuf =gdf.prepareXYBuffer("kxx" ,1,1);
-	static final float[][] kxxxBuf=gdf.prepareXYBuffer("kxxx",1,1);
-	static final float[][] kyyBuf =gdf.prepareXYBuffer("kyy" ,1,1);
-	static final float[][] kyyyBuf=gdf.prepareXYBuffer("kyyy",1,1);
+	static final Variable kxxBuf =gdf.prepareXYBuffer("kxx" ,1,1);
+	static final Variable kxxxBuf=gdf.prepareXYBuffer("kxxx",1,1);
+	static final Variable kyyBuf =gdf.prepareXYBuffer("kyy" ,1,1);
+	static final Variable kyyyBuf=gdf.prepareXYBuffer("kyyy",1,1);
 	
 	static final Function<Record,StochasticParams> mapping=r->{
 		int orderOfModel=order;

@@ -3,10 +3,9 @@ package GDPSCS;
 
 import java.io.FileWriter;
 import java.util.List;
-
 import diffuse.DiffusionModel;
+import miniufo.application.statisticsModel.BinningStatistics;
 import miniufo.application.statisticsModel.EulerianStatistics;
-import miniufo.database.DataBaseUtil;
 import miniufo.descriptor.DataDescriptor;
 import miniufo.diagnosis.DiagnosisFactory;
 import miniufo.lagrangian.LagrangianUtil;
@@ -80,7 +79,7 @@ public class EddySpeedPDFByGM{
 			}
 		}
 		
-		dataToFile(path,"0.25",DataBaseUtil.binningCount(template,ls).getData()[0][0],dataU,dataV,posiX,posiY);
+		dataToFile(path,"0.25",new BinningStatistics(template).binningCount(ls).getData()[0][0],dataU,dataV,posiX,posiY);
 	}
 	
 	static void smoothData(List<? extends Particle> ls){

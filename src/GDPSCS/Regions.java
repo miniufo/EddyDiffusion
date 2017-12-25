@@ -75,8 +75,8 @@ public class Regions{
 		sb.append("'enable print "+path+"TrajBox.gmf'\n\n");
 		sb.append("'set grid off'\n");
 		sb.append("'set grads off'\n");
-		sb.append("'set lon "+SCS.getLonMin()+" "+SCS.getLonMax()+"'\n");
-		sb.append("'set lat "+SCS.getLatMin()+" "+SCS.getLatMax()+"'\n");
+		sb.append("'set lon "+SCS.getXMin()+" "+SCS.getXMax()+"'\n");
+		sb.append("'set lat "+SCS.getYMin()+" "+SCS.getYMax()+"'\n");
 		sb.append("'set mpdset mres'\n\n");
 		
 		sb.append(box1.getName()+"='"+box1+"'\n");

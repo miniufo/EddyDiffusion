@@ -4,11 +4,10 @@ package GDPIO;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.List;
-
 import diffuse.DiffusionModel;
+import miniufo.application.statisticsModel.BinningStatistics;
 import miniufo.application.statisticsModel.EulerianStatistics;
 import miniufo.basic.ArrayUtil;
-import miniufo.database.DataBaseUtil;
 import miniufo.descriptor.DataDescriptor;
 import miniufo.diagnosis.DiagnosisFactory;
 import miniufo.diagnosis.Variable;
@@ -49,7 +48,7 @@ public final class CyclesFiltering2{
 		EulerianStatistics estat=new EulerianStatistics(ls,template,true);
 		estat.maskoutByBinObservation(binThreshold);
 		
-		Variable count=DataBaseUtil.binningCount(template,ls);
+		Variable count=new BinningStatistics(template).binningCount(ls);
 		Variable EKE=estat.cEKE();
 		Variable[] ellipse=estat.cVarianceEllipse();
 		
@@ -103,10 +102,10 @@ public final class CyclesFiltering2{
 	
 	static void writeData2D(DataDescriptor dd,float[][] data,float[][] count,String path){
 		try(BufferedWriter br=new BufferedWriter(new FileWriter(path))){
-			float lon1=IO.getLonMin();
-			float lat1=IO.getLonMax();
-			float lon2=IO.getLatMin();
-			float lat2=IO.getLatMax();
+			float lon1=IO.getXMin();
+			float lat1=IO.getXMax();
+			float lon2=IO.getYMin();
+			float lat2=IO.getYMax();
 			
 			for(int j=dd.getYNum(lat1),I=dd.getXNum(lon2),J=dd.getYNum(lat2);j<=J;j++){
 				for(int i=dd.getXNum(lon1);i<I;i++)

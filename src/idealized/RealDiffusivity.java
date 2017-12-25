@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.function.Predicate;
 import diffuse.DiffusionModel;
 import diffuse.DiffusionModel.Method;
+import miniufo.application.statisticsModel.BinningStatistics;
 import miniufo.application.statisticsModel.EulerianStatistics;
 import miniufo.application.statisticsModel.LagrangianStatisticsByDavis;
 import miniufo.basic.ArrayUtil;
 import miniufo.concurrent.ConcurrentUtil;
-import miniufo.database.DataBaseUtil;
 import miniufo.descriptor.DataDescriptor;
 import miniufo.diagnosis.DiagnosisFactory;
 import miniufo.diagnosis.Variable;
@@ -104,7 +104,7 @@ public final class RealDiffusivity{
 			EulerianStatistics estat=new EulerianStatistics(drogued,template,false);
 			
 			if(cEulerianStatistics){
-				Variable[] count=new Variable[]{DataBaseUtil.binningCount(template,drogued)};
+				Variable[] count=new Variable[]{new BinningStatistics(template).binningCount(drogued)};
 				Variable[] mean=estat.cMeansOfBins();
 				Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season2,0,1);
 				Variable[] bias=estat.cSeasonalSamplingBias();
@@ -129,7 +129,7 @@ public final class RealDiffusivity{
 			EulerianStatistics estat=new EulerianStatistics(drogued,template,false);
 			
 			if(cEulerianStatistics){
-				Variable[] count=new Variable[]{DataBaseUtil.binningCount(template,drogued)};
+				Variable[] count=new Variable[]{new BinningStatistics(template).binningCount(drogued)};
 				Variable[] mean=estat.cMeansOfBins();
 				Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season2,0,1);
 				Variable[] bias=estat.cSeasonalSamplingBias();
@@ -154,7 +154,7 @@ public final class RealDiffusivity{
 			EulerianStatistics estat=new EulerianStatistics(drogued,template,false);
 			
 			if(cEulerianStatistics){
-				Variable[] count=new Variable[]{DataBaseUtil.binningCount(template,drogued)};
+				Variable[] count=new Variable[]{new BinningStatistics(template).binningCount(drogued)};
 				Variable[] mean=estat.cMeansOfBins();
 				Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season4,0,1);
 				Variable[] bias=estat.cSeasonalSamplingBias();
@@ -179,7 +179,7 @@ public final class RealDiffusivity{
 			EulerianStatistics estat=new EulerianStatistics(drogued,template,false);
 			
 			if(cEulerianStatistics){
-				Variable[] count=new Variable[]{DataBaseUtil.binningCount(template,drogued)};
+				Variable[] count=new Variable[]{new BinningStatistics(template).binningCount(drogued)};
 				Variable[] mean=estat.cMeansOfBins();
 				Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season2,0,1);
 				Variable[] bias=estat.cSeasonalSamplingBias();
@@ -205,7 +205,7 @@ public final class RealDiffusivity{
 			EulerianStatistics estat=new EulerianStatistics(drogued,template,true);
 			
 			if(cEulerianStatistics){
-				Variable[] count=new Variable[]{DataBaseUtil.binningCount(template,drogued)};
+				Variable[] count=new Variable[]{new BinningStatistics(template).binningCount(drogued)};
 				Variable[] mean=estat.cMeansOfBins();
 				Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season2,0,1);
 				Variable[] bias=estat.cSeasonalSamplingBias();

@@ -4,10 +4,10 @@ package scenarios;
 import java.util.List;
 import diffuse.DiffusionModel;
 import diffuse.DiffusionModel.Method;
+import miniufo.application.statisticsModel.BinningStatistics;
 import miniufo.application.statisticsModel.EulerianStatistics;
 import miniufo.basic.ArrayUtil;
 import miniufo.concurrent.ConcurrentUtil;
-import miniufo.database.DataBaseUtil;
 import miniufo.descriptor.DataDescriptor;
 import miniufo.diagnosis.DiagnosisFactory;
 import miniufo.diagnosis.Variable;
@@ -19,8 +19,6 @@ import miniufo.lagrangian.Particle;
 public final class EddyMeanDecomp{
 	//
 	private static final boolean cEulerianStatistics=true;
-	
-	private static final float dlon=0.0f;
 	
 	private static final int TL=4;	// Lagrangian timescale
 	
@@ -67,10 +65,10 @@ public final class EddyMeanDecomp{
 		case Bin:{
 			System.out.println(" using binning ("+dd.getDXDef()[0]+"-deg) method...");
 			
-			EulerianStatistics estat=new EulerianStatistics(ps,dd,dlon,false);
+			EulerianStatistics estat=new EulerianStatistics(ps,dd,false);
 			
 			if(cEulerianStatistics){
-				Variable[] count=new Variable[]{DataBaseUtil.binningCount(dd,ps,dlon)};
+				Variable[] count=new Variable[]{new BinningStatistics(dd).binningCount(ps)};
 				Variable[] mean=estat.cMeansOfBins();
 				Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season4,0,1);
 				Variable[] bias=estat.cSeasonalSamplingBias();
@@ -93,10 +91,10 @@ public final class EddyMeanDecomp{
 		case Season2:{
 			System.out.println(" using seasonal method with 2 seasons...");
 			
-			EulerianStatistics estat=new EulerianStatistics(ps,dd,dlon,false);
+			EulerianStatistics estat=new EulerianStatistics(ps,dd,false);
 			
 			if(cEulerianStatistics){
-				Variable[] count=new Variable[]{DataBaseUtil.binningCount(dd,ps,dlon)};
+				Variable[] count=new Variable[]{new BinningStatistics(dd).binningCount(ps)};
 				Variable[] mean=estat.cMeansOfBins();
 				Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season4,0,1);
 				Variable[] bias=estat.cSeasonalSamplingBias();
@@ -119,10 +117,10 @@ public final class EddyMeanDecomp{
 		case Season4:{
 			System.out.println(" using seasonal method with 4 seasons...");
 			
-			EulerianStatistics estat=new EulerianStatistics(ps,dd,dlon,false);
+			EulerianStatistics estat=new EulerianStatistics(ps,dd,false);
 			
 			if(cEulerianStatistics){
-				Variable[] count=new Variable[]{DataBaseUtil.binningCount(dd,ps,dlon)};
+				Variable[] count=new Variable[]{new BinningStatistics(dd).binningCount(ps)};
 				Variable[] mean=estat.cMeansOfBins();
 				Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season4,0,1);
 				Variable[] bias=estat.cSeasonalSamplingBias();
@@ -145,10 +143,10 @@ public final class EddyMeanDecomp{
 		case GM:{
 			System.out.println(" using GM method with TL="+TL+" days...");
 			
-			EulerianStatistics estat=new EulerianStatistics(ps,dd,dlon,false);
+			EulerianStatistics estat=new EulerianStatistics(ps,dd,false);
 			
 			if(cEulerianStatistics){
-				Variable[] count=new Variable[]{DataBaseUtil.binningCount(dd,ps,dlon)};
+				Variable[] count=new Variable[]{new BinningStatistics(dd).binningCount(ps)};
 				Variable[] mean=estat.cMeansOfBins();
 				Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season4,0,1);
 				Variable[] bias=estat.cSeasonalSamplingBias();
@@ -172,10 +170,10 @@ public final class EddyMeanDecomp{
 		case GM2:{
 			System.out.println(" using GM2 method with TL="+TL+" days...");
 			
-			EulerianStatistics estat=new EulerianStatistics(ps,dd,dlon,true);
+			EulerianStatistics estat=new EulerianStatistics(ps,dd,true);
 			
 			if(cEulerianStatistics){
-				Variable[] count=new Variable[]{DataBaseUtil.binningCount(dd,ps,dlon)};
+				Variable[] count=new Variable[]{new BinningStatistics(dd).binningCount(ps)};
 				Variable[] mean=estat.cMeansOfBins();
 				Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season4,0,1);
 				Variable[] bias=estat.cSeasonalSamplingBias();

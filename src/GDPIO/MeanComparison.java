@@ -2,11 +2,10 @@
 package GDPIO;
 
 import java.util.List;
-
 import diffuse.DiffusionModel;
+import miniufo.application.statisticsModel.BinningStatistics;
 import miniufo.application.statisticsModel.EulerianStatistics;
 import miniufo.concurrent.ConcurrentUtil;
-import miniufo.database.DataBaseUtil;
 import miniufo.descriptor.DataDescriptor;
 import miniufo.diagnosis.DiagnosisFactory;
 import miniufo.diagnosis.Variable;
@@ -70,7 +69,7 @@ public class MeanComparison{
 		Variable[][] amps3=estat.cCycleAmplitudesAndPhases(new float[]{1,2,3}, 5f/365f);
 		Variable[][] amps4=estat.cCycleAmplitudesAndPhases(new float[]{1,2}, 2f/365f);
 		Variable[][] amps5=estat.cCycleAmplitudesAndPhases(new float[]{1,2},10f/365f);
-		Variable v=DataBaseUtil.binningCount(dd,ls);
+		Variable v=new BinningStatistics(dd).binningCount(ls);
 		
 		DataWrite dw=DataIOFactory.getDataWrite(dd,path+"MeanComparison.dat");
 		dw.writeData(dd,concatAll(Variable.class,

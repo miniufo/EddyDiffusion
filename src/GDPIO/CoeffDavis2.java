@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import diffuse.DiffusionModel;
-import miniufo.application.statisticsModel.LagrangianStatResult;
+import miniufo.application.statisticsModel.SingleParticleStatResult;
 import miniufo.application.statisticsModel.LagrangianStatisticsByDavis;
 import miniufo.descriptor.DataDescriptor;
 import miniufo.diagnosis.DiagnosisFactory;
@@ -48,8 +48,8 @@ public final class CoeffDavis2{
 		
 		int tRad=4*60;
 		
-		LagrangianStatResult[] r1=new LagrangianStatResult[10];
-		LagrangianStatResult[] r2=new LagrangianStatResult[10];
+		SingleParticleStatResult[] r1=new SingleParticleStatResult[10];
+		SingleParticleStatResult[] r2=new SingleParticleStatResult[10];
 		
 		for(int i=0;i<regions.length;i++){
 			final int itag=i;

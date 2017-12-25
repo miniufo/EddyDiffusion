@@ -9,11 +9,11 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import miniufo.application.advanced.CoordinateTransformation;
+import miniufo.application.statisticsModel.BinningStatistics;
 import miniufo.basic.ArrayUtil;
 import miniufo.basic.InterpolationModel;
 import miniufo.basic.InterpolationModel.Type;
 import miniufo.database.AccessGDPDrifter;
-import miniufo.database.DataBaseUtil;
 import miniufo.descriptor.DataDescriptor;
 import miniufo.diagnosis.DiagnosisFactory;
 import miniufo.diagnosis.MDate;
@@ -353,7 +353,7 @@ public final class DiffusionModel{
 		for(int l=0,L=dd.getTCount();l<L;l++){
 			long time=dd.getTDef().getSamples()[l].getLongTime();
 			
-			float[][][] bufs=new float[vlen][][];
+			Variable[] bufs=new Variable[vlen];
 			
 			for(int m=0;m<vlen;m++) bufs[m]=gds[m].prepareXYBuffer(vnames[m],l+1,1);
 			
@@ -426,8 +426,8 @@ public final class DiffusionModel{
 		for(int l=0,L=dd.getTCount();l<L;l++){
 			long time=dd.getTDef().getSamples()[l].getLongTime();
 			
-			float[][] bufU=gdsU.prepareXYBuffer(u,l+1,1);
-			float[][] bufV=gdsV.prepareXYBuffer(v,l+1,1);
+			Variable bufU=gdsU.prepareXYBuffer(u,l+1,1);
+			Variable bufV=gdsV.prepareXYBuffer(v,l+1,1);
 			
 			for(Particle dftr:ls){
 				for(int ll=0,LL=dftr.getTCount();ll<LL;ll++){
@@ -509,7 +509,7 @@ public final class DiffusionModel{
 	 * @param	list	a list of drifter data
 	 */
 	public static void projectCurrentInAlongAndCrossStream(DataDescriptor dd,List<? extends Particle> list){
-		Variable[] mcurrent=DataBaseUtil.binningData(dd,list,0,1);
+		Variable[] mcurrent=new BinningStatistics(dd).binningData(list,0,1);
 		
 		float[][] udata=mcurrent[0].getData()[0][0];
 		float[][] vdata=mcurrent[1].getData()[0][0];
@@ -652,8 +652,8 @@ public final class DiffusionModel{
 		sb.append("'enable print "+path+"trajectory.gmf'\n\n");
 		sb.append("'set grid off'\n");
 		sb.append("'set grads off'\n");
-		sb.append("'set lon "+r.getLonMin()+" "+r.getLonMax()+"'\n");
-		sb.append("'set lat "+r.getLatMin()+" "+r.getLatMax()+"'\n");
+		sb.append("'set lon "+r.getXMin()+" "+r.getXMax()+"'\n");
+		sb.append("'set lat "+r.getYMin()+" "+r.getYMax()+"'\n");
 		sb.append("'set mpdset mres'\n\n");
 		sb.append("'setvpage 1 1.3 1 1'\n");
 		sb.append("'setlopts 7 0.18 5 5'\n");

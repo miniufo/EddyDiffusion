@@ -4,7 +4,7 @@ package GDPIO;
 import java.util.Arrays;
 import java.util.List;
 import diffuse.DiffusionModel;
-import miniufo.database.DataBaseUtil;
+import miniufo.application.statisticsModel.BinningStatistics;
 import miniufo.descriptor.DataDescriptor;
 import miniufo.diagnosis.DiagnosisFactory;
 import miniufo.diagnosis.Range;
@@ -35,14 +35,16 @@ public final class ValidBins{
 		
 		int[] mons=new int[seg];
 		
+		BinningStatistics bs=new BinningStatistics(template);
+		
 		Variable[] counts=new Variable[len];
-		Variable totalCnt=DataBaseUtil.binningCount(template,ls);
+		Variable totalCnt=bs.binningCount(ls);
 		
 		for(int i=0;i<len;i++){
 			mons[0]=i*seg+1;
 			for(int ii=1;ii<seg;ii++) mons[ii]=mons[ii-1]+1;
 			System.out.println(Arrays.toString(mons));
-			counts[i]=DataBaseUtil.binningCountByDate(template,ls,"month",mons);
+			counts[i]=bs.binningCountByDate(ls,"month",mons);
 		}
 		
 		Variable valid=new Variable("valid",new Range("",template));

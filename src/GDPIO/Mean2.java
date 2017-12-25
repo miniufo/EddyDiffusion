@@ -4,9 +4,9 @@ package GDPIO;
 import java.util.ArrayList;
 import java.util.List;
 import diffuse.DiffusionModel;
+import miniufo.application.statisticsModel.BinningStatistics;
 import miniufo.application.statisticsModel.EulerianStatistics;
 import miniufo.concurrent.ConcurrentUtil;
-import miniufo.database.DataBaseUtil;
 import miniufo.descriptor.DataDescriptor;
 import miniufo.diagnosis.DiagnosisFactory;
 import miniufo.diagnosis.Variable;
@@ -44,13 +44,15 @@ public final class Mean2{
 		
 		EulerianStatistics estat=new EulerianStatistics(ls,template,true);
 		
+		BinningStatistics bs=new BinningStatistics(template);
+		
 		Variable[] current=estat.cMeansOfBins();
 		Variable[] stdcurr=estat.cSTDsOfBins();
 		Variable[] seasBias=estat.cSeasonalSamplingBias();
 		Variable[] ellipse=estat.cVarianceEllipse();
-		Variable[] v=new Variable[]{DataBaseUtil.binningCount(template,ls)};
-		Variable[] seasonal=concatAll(Variable.class,DataBaseUtil.binningSeasonalData(template,ls,true,seasons,0,1));
-		Variable[] seaCount=DataBaseUtil.binningSeasonalCount(template,ls,seasons);
+		Variable[] v=new Variable[]{bs.binningCount(ls)};
+		Variable[] seasonal=concatAll(Variable.class,bs.binningSeasonalData(ls,seasons,0,1));
+		Variable[] seaCount=bs.binningSeasonalCount(ls,seasons);
 		Variable[][] amps =estat.cCycleAmplitudesAndPhases(new float[]{1,2},4f/365f);
 		
 		DataWrite dw=DataIOFactory.getDataWrite(template,path+"Mean/recordsUndrC.dat");

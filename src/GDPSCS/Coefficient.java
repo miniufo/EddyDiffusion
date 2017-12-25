@@ -3,10 +3,9 @@ package GDPSCS;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import miniufo.application.statisticsModel.BinningStatistics;
 import miniufo.application.statisticsModel.LagrangianStatisticsByTalyor;
 import miniufo.database.AccessGDPDrifter;
-import miniufo.database.DataBaseUtil;
 import miniufo.descriptor.DataDescriptor;
 import miniufo.diagnosis.DiagnosisFactory;
 import miniufo.diagnosis.Variable;
@@ -98,7 +97,7 @@ public class Coefficient{
 		
 		Variable[] statis =lstat.cStatisticsByTaylorTheory(90,3600*6);
 		Variable[] gridded=lstat.binningMeanByMedianPosition(statis);
-		Variable count=DataBaseUtil.binningMedianCount(dd,ls);
+		Variable count=new BinningStatistics(dd).binningMedianCount(ls);
 		
 		DataWrite dw=DataIOFactory.getDataWrite(dd,path+"KHGrid.dat");
 		dw.writeData(dd,concatAll(Variable.class,gridded,count));	dw.closeFile();

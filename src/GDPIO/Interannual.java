@@ -2,13 +2,12 @@
 package GDPIO;
 
 import java.util.List;
-
 import diffuse.DiffusionModel;
+import miniufo.application.statisticsModel.BinningStatistics;
 import miniufo.application.statisticsModel.EulerianStatistics;
 import miniufo.basic.ArrayUtil;
 import miniufo.concurrent.ConcurrentUtil;
 import miniufo.database.AccessGDPDrifter;
-import miniufo.database.DataBaseUtil;
 import miniufo.descriptor.DataDescriptor;
 import miniufo.diagnosis.DiagnosisFactory;
 import miniufo.diagnosis.MDate;
@@ -67,15 +66,17 @@ public class Interannual{
 		// time-variant DataDescriptor
 		DataDescriptor dd=DiagnosisFactory.getDataDescriptor(path+"Drifter.ctl");
 		
-		Variable[] vels=DataBaseUtil.binningData(dd,ls,0,1);
-		Variable[] temp=DataBaseUtil.binningData(dd,ls,2);
-		Variable count=DataBaseUtil.binningCount(dd,ls);
+		BinningStatistics bs=new BinningStatistics(dd);
+		
+		Variable[] vels=bs.binningData(ls,0,1);
+		Variable[] temp=bs.binningData(ls,2);
+		Variable count=bs.binningCount(ls);
 		
 		EulerianStatistics estat=new EulerianStatistics(ls,template,true);
 		estat.removeCyclesByGM(new float[]{1,2},4f/365f,2);
 		
-		Variable[] vels2=DataBaseUtil.binningData(dd,ls,0,1);
-		Variable[] temp2=DataBaseUtil.binningData(dd,ls,2);
+		Variable[] vels2=bs.binningData(ls,0,1);
+		Variable[] temp2=bs.binningData(ls,2);
 		
 		CtlDataWriteStream cdws=new CtlDataWriteStream(path+"Drifter.dat");
 		cdws.writeData(ArrayUtil.concatAll(Variable.class,vels,vels2,temp,temp2,new Variable[]{count}));

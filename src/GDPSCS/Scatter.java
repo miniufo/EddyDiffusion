@@ -2,11 +2,10 @@
 package GDPSCS;
 
 import java.util.List;
-
 import diffuse.DiffusionModel;
+import miniufo.application.statisticsModel.BinningStatistics;
 import miniufo.application.statisticsModel.LagrangianStatisticsByTalyor;
 import miniufo.basic.ArrayUtil;
-import miniufo.database.DataBaseUtil;
 import miniufo.descriptor.DataDescriptor;
 import miniufo.diagnosis.DiagnosisFactory;
 import miniufo.diagnosis.Variable;
@@ -85,7 +84,7 @@ public class Scatter{
 		
 		Variable[] statis =lstat.cStatisticsByTaylorTheory(90,3600*6);
 		Variable[] gridded=lstat.binningMeanByMedianPosition(statis);
-		Variable count=DataBaseUtil.binningCount(dd,ls);
+		Variable count=new BinningStatistics(dd).binningCount(ls);
 		
 		Variable[] re=ArrayUtil.concatAll(Variable.class,gridded,count);
 		

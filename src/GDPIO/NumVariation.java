@@ -3,7 +3,7 @@ package GDPIO;
 
 import java.util.List;
 import diffuse.DiffusionModel;
-import miniufo.database.DataBaseUtil;
+import miniufo.application.statisticsModel.BinningStatistics;
 import miniufo.descriptor.DataDescriptor;
 import miniufo.diagnosis.DiagnosisFactory;
 import miniufo.diagnosis.Variable;
@@ -31,7 +31,7 @@ public class NumVariation{
 		// time-variant DataDescriptor
 		DataDescriptor dd=DiagnosisFactory.getDataDescriptor(path+"NumVariation.ctl");
 		
-		Variable count=DataBaseUtil.binningCount(dd,ls);
+		Variable count=new BinningStatistics(dd).binningCount(ls);
 		
 		CtlDataWriteStream cdws=new CtlDataWriteStream(path+"NumVariation.dat");
 		cdws.writeData(count);	cdws.closeFile();

@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import diffuse.DiffusionModel;
+import miniufo.application.statisticsModel.BinningStatistics;
 import miniufo.application.statisticsModel.EulerianStatistics;
 import miniufo.application.statisticsModel.LagrangianStatisticsByDavis;
 import miniufo.basic.ArrayUtil;
-import miniufo.database.DataBaseUtil;
 import miniufo.descriptor.DataDescriptor;
 import miniufo.diagnosis.DiagnosisFactory;
 import miniufo.diagnosis.Range;
@@ -186,7 +186,7 @@ public final class ZonalBCs{
 		
 		EulerianStatistics estat=new EulerianStatistics(ps,dd,false);
 		
-		Variable[] count=new Variable[]{DataBaseUtil.binningCount(dd,ps)};
+		Variable[] count=new Variable[]{new BinningStatistics(dd).binningCount(ps)};
 		Variable[] mean=estat.cMeansOfBins();
 		Variable[] arrb=estat.cConcentrationAndArrayBias(Diff);
 		
