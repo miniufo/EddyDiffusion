@@ -213,8 +213,8 @@ public final class ZonalBCs{
 		//Predicate<Record>   truetrack=r->{return region.inRange(r.getLon(),r.getLat())&&r.getTime()==str;};
 		Predicate<Record> pseudotrack=r->{return region.inRange(r.getXPos(),r.getYPos())&&r.getTime()==str;};
 		
-		lstat.cStatisticsByDavisTheory1(pseudotrack,tRad).toFile(path+"Diff/"+region.getName()+"1_o"+order+"pseudo.txt");
-		lstat.cStatisticsByDavisTheory2(pseudotrack,tRad).toFile(path+"Diff/"+region.getName()+"2_o"+order+"pseudo.txt");
-		lstat.cStatisticsByDavisTheory3(pseudotrack,tRad).toFile(path+"Diff/"+region.getName()+"3_o"+order+"pseudo.txt");
+		lstat.cStatisticsByDavisTheory     (pseudotrack,tRad).toFile(path+"Diff/"+region.getName()+"1_o"+order+"pseudo.txt");
+		lstat.cStatisticsByTaylorTheory    (pseudotrack,tRad).toFile(path+"Diff/"+region.getName()+"2_o"+order+"pseudo.txt");
+		lstat.cStatisticsByDispersionTheory(pseudotrack,tRad).toFile(path+"Diff/"+region.getName()+"3_o"+order+"pseudo.txt");
 	}
 }

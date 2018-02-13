@@ -237,8 +237,8 @@ public final class ZonalIncreDiff{
 		
 		Predicate<Record> cond=r->region.inRange(r.getXPos(),r.getYPos());
 		
-		lstat.cStatisticsByDavisTheory1(cond,tRad).toFile(path+"Diff/Lstat1_o"+order+".txt");
-		lstat.cStatisticsByDavisTheory2(cond,tRad).toFile(path+"Diff/Lstat2_o"+order+".txt");
-		lstat.cStatisticsByDavisTheory3(cond,tRad).toFile(path+"Diff/Lstat3_o"+order+".txt");
+		lstat.cStatisticsByDavisTheory     (cond,tRad).toFile(path+"Diff/Lstat1_o"+order+".txt");
+		lstat.cStatisticsByTaylorTheory    (cond,tRad).toFile(path+"Diff/Lstat2_o"+order+".txt");
+		lstat.cStatisticsByDispersionTheory(cond,tRad).toFile(path+"Diff/Lstat3_o"+order+".txt");
 	}
 }

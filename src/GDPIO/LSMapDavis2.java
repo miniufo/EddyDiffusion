@@ -40,7 +40,7 @@ public final class LSMapDavis2{
 		
 		float bRad=2f;
 		
-		Variable[] stats=lstat.cStatisticsMapByDavisTheory3(tRad,bRad,str,end,minT);
+		Variable[] stats=lstat.cMeanStatisticsMapByDispersionTheory(tRad,bRad,str,end,minT);
 		
 		DataWrite dw=DataIOFactory.getDataWrite(dd,path+"Diff/NstatsMap"+prefix+"3.dat");
 		dw.writeData(dd,stats);	dw.closeFile();

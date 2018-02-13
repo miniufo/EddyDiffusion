@@ -200,8 +200,8 @@ public final class IdealizedTrackingValidation{
 		
 		Predicate<Record> cond=r->region.inRange(r.getXPos(),r.getYPos());
 		
-		SingleParticleStatResult r1=lstat.cStatisticsByDavisTheory1(cond,tRad);
-		SingleParticleStatResult r2=lstat.cStatisticsByDavisTheory2(cond,tRad);
+		SingleParticleStatResult r1=lstat.cStatisticsByDavisTheory (cond,tRad);
+		SingleParticleStatResult r2=lstat.cStatisticsByTaylorTheory(cond,tRad);
 		
 		r1.toFile(path+"lstat"+fname+"1.txt");
 		r2.toFile(path+"lstat"+fname+"2.txt");

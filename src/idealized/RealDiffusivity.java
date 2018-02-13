@@ -241,7 +241,7 @@ public final class RealDiffusivity{
 		
 		Predicate<Record> cond=r->region.inRange(r.getXPos(),r.getYPos());
 		
-		lstat.cStatisticsByDavisTheory1(cond,tRad).toFile(path+"Idealized/Real/Lstat"+tag+m+"1.txt");
-		lstat.cStatisticsByDavisTheory2(cond,tRad).toFile(path+"Idealized/Real/Lstat"+tag+m+"2.txt");
+		lstat.cStatisticsByDavisTheory (cond,tRad).toFile(path+"Idealized/Real/Lstat"+tag+m+"1.txt");
+		lstat.cStatisticsByTaylorTheory(cond,tRad).toFile(path+"Idealized/Real/Lstat"+tag+m+"2.txt");
 	}
 }

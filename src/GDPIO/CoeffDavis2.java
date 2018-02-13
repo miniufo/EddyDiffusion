@@ -56,8 +56,8 @@ public final class CoeffDavis2{
 			
 			Predicate<Record> cond=r->regions[itag].inRange(r.getXPos(),r.getYPos());
 			
-			r1[i]=lstat.cStatisticsByDavisTheory1(cond,tRad);
-			r2[i]=lstat.cStatisticsByDavisTheory2(cond,tRad);
+			r1[i]=lstat.cStatisticsByDavisTheory (cond,tRad);
+			r2[i]=lstat.cStatisticsByTaylorTheory(cond,tRad);
 			
 			r1[i].toFile(path+"Diff/R"+i+"1"+prefix+".txt");
 			r2[i].toFile(path+"Diff/R"+i+"2"+prefix+".txt");
