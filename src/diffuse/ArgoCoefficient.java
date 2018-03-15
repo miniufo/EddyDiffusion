@@ -73,7 +73,7 @@ public class ArgoCoefficient{
 				ArgoFloat af2=af.toDailyData();
 				if(af2!=null&&af2.isContinousPosition()){
 					af2.interpolateDailyPosition();
-					af2.cDailyCurrentSpeed();
+					af2.cVelocityByPosition();
 					af2.crossIDLToDiscontinuousRecord();
 					
 					if(writeTraj){

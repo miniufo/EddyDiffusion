@@ -13,6 +13,7 @@ import miniufo.diagnosis.DiagnosisFactory;
 import miniufo.diagnosis.Variable;
 import miniufo.io.DataIOFactory;
 import miniufo.io.DataWrite;
+import miniufo.lagrangian.GDPDrifter;
 import miniufo.lagrangian.Particle;
 
 
@@ -80,7 +81,7 @@ public final class IdealizedEddyMeanDecomp{
 			if(cEulerianStatistics){
 				Variable[] count=new Variable[]{new BinningStatistics(dd).binningCount(ps)};
 				Variable[] mean=estat.cMeansOfBins();
-				Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season2,0,1);
+				Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season2,GDPDrifter.UVEL,GDPDrifter.VVEL);
 				Variable[] bias=estat.cSeasonalSamplingBias();
 				
 				DataWrite dw=DataIOFactory.getDataWrite(dd,path+"Estat"+tag+m+".dat");
@@ -105,7 +106,7 @@ public final class IdealizedEddyMeanDecomp{
 			if(cEulerianStatistics){
 				Variable[] count=new Variable[]{new BinningStatistics(dd).binningCount(ps)};
 				Variable[] mean=estat.cMeansOfBins();
-				Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season2,0,1);
+				Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season2,GDPDrifter.UVEL,GDPDrifter.VVEL);
 				Variable[] bias=estat.cSeasonalSamplingBias();
 				
 				DataWrite dw=DataIOFactory.getDataWrite(dd,path+"Estat"+tag+m+".dat");
@@ -130,7 +131,7 @@ public final class IdealizedEddyMeanDecomp{
 			if(cEulerianStatistics){
 				Variable[] count=new Variable[]{new BinningStatistics(dd).binningCount(ps)};
 				Variable[] mean=estat.cMeansOfBins();
-				Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season4,0,1);
+				Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season4,GDPDrifter.UVEL,GDPDrifter.VVEL);
 				Variable[] bias=estat.cSeasonalSamplingBias();
 				
 				DataWrite dw=DataIOFactory.getDataWrite(dd,path+"Estat"+tag+m+".dat");
@@ -155,7 +156,7 @@ public final class IdealizedEddyMeanDecomp{
 			if(cEulerianStatistics){
 				Variable[] count=new Variable[]{new BinningStatistics(dd).binningCount(ps)};
 				Variable[] mean=estat.cMeansOfBins();
-				Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season2,0,1);
+				Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season2,GDPDrifter.UVEL,GDPDrifter.VVEL);
 				Variable[] bias=estat.cSeasonalSamplingBias();
 				Variable[][] ampli=estat.cCycleAmplitudesAndPhases(new float[]{1,2},TL/365f);
 				
@@ -181,7 +182,7 @@ public final class IdealizedEddyMeanDecomp{
 			if(cEulerianStatistics){
 				Variable[] count=new Variable[]{new BinningStatistics(dd).binningCount(ps)};
 				Variable[] mean=estat.cMeansOfBins();
-				Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season2,0,1);
+				Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season2,GDPDrifter.UVEL,GDPDrifter.VVEL);
 				Variable[] bias=estat.cSeasonalSamplingBias();
 				Variable[][] ampli=estat.cCycleAmplitudesAndPhases(new float[]{1,2},TL/365f);
 				

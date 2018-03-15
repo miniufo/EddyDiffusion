@@ -106,7 +106,7 @@ public final class RealDiffusivity{
 			if(cEulerianStatistics){
 				Variable[] count=new Variable[]{new BinningStatistics(template).binningCount(drogued)};
 				Variable[] mean=estat.cMeansOfBins();
-				Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season2,0,1);
+				Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season2,GDPDrifter.UVEL,GDPDrifter.VVEL);
 				Variable[] bias=estat.cSeasonalSamplingBias();
 				
 				DataWrite dw=DataIOFactory.getDataWrite(template,path+"Estat"+m+".dat");
@@ -131,7 +131,7 @@ public final class RealDiffusivity{
 			if(cEulerianStatistics){
 				Variable[] count=new Variable[]{new BinningStatistics(template).binningCount(drogued)};
 				Variable[] mean=estat.cMeansOfBins();
-				Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season2,0,1);
+				Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season2,GDPDrifter.UVEL,GDPDrifter.VVEL);
 				Variable[] bias=estat.cSeasonalSamplingBias();
 				
 				DataWrite dw=DataIOFactory.getDataWrite(template,path+"Estat"+m+".dat");
@@ -156,7 +156,7 @@ public final class RealDiffusivity{
 			if(cEulerianStatistics){
 				Variable[] count=new Variable[]{new BinningStatistics(template).binningCount(drogued)};
 				Variable[] mean=estat.cMeansOfBins();
-				Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season4,0,1);
+				Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season4,GDPDrifter.UVEL,GDPDrifter.VVEL);
 				Variable[] bias=estat.cSeasonalSamplingBias();
 				
 				DataWrite dw=DataIOFactory.getDataWrite(template,path+"Estat"+m+".dat");
@@ -181,7 +181,7 @@ public final class RealDiffusivity{
 			if(cEulerianStatistics){
 				Variable[] count=new Variable[]{new BinningStatistics(template).binningCount(drogued)};
 				Variable[] mean=estat.cMeansOfBins();
-				Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season2,0,1);
+				Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season2,GDPDrifter.UVEL,GDPDrifter.VVEL);
 				Variable[] bias=estat.cSeasonalSamplingBias();
 				Variable[][] ampli=estat.cCycleAmplitudesAndPhases(new float[]{1,2},TL/365f);
 				
@@ -207,7 +207,7 @@ public final class RealDiffusivity{
 			if(cEulerianStatistics){
 				Variable[] count=new Variable[]{new BinningStatistics(template).binningCount(drogued)};
 				Variable[] mean=estat.cMeansOfBins();
-				Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season2,0,1);
+				Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season2,GDPDrifter.UVEL,GDPDrifter.VVEL);
 				Variable[] bias=estat.cSeasonalSamplingBias();
 				Variable[][] ampli=estat.cCycleAmplitudesAndPhases(new float[]{1,2},TL/365f);
 				

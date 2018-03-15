@@ -51,7 +51,7 @@ public final class Mean2{
 		Variable[] seasBias=estat.cSeasonalSamplingBias();
 		Variable[] ellipse=estat.cVarianceEllipse();
 		Variable[] v=new Variable[]{bs.binningCount(ls)};
-		Variable[] seasonal=concatAll(Variable.class,bs.binningSeasonalData(ls,seasons,0,1));
+		Variable[] seasonal=concatAll(Variable.class,bs.binningSeasonalData(ls,seasons,GDPDrifter.UVEL,GDPDrifter.VVEL));
 		Variable[] seaCount=bs.binningSeasonalCount(ls,seasons);
 		Variable[][] amps =estat.cCycleAmplitudesAndPhases(new float[]{1,2},4f/365f);
 		
@@ -65,7 +65,7 @@ public final class Mean2{
 		List<GDPDrifter> lsudg=new ArrayList<>();
 		
 		for(GDPDrifter dr:ls){
-			GDPDrifter[] split=dr.splitByDrogueOffDate(3);
+			GDPDrifter[] split=dr.splitByDrogueOffDate(GDPDrifter.DrgOff);
 			
 			if(split[0]!=null) lsdrg.add(split[0]);
 			if(split[1]!=null) lsudg.add(split[1]);

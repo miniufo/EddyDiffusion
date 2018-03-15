@@ -8,7 +8,9 @@ import diffuse.DiffusionModel;
 import miniufo.application.statisticsModel.EulerianStatistics;
 import miniufo.concurrent.ConcurrentUtil;
 import miniufo.diagnosis.DiagnosisFactory;
+import miniufo.lagrangian.AttachedMeta;
 import miniufo.lagrangian.GDPDrifter;
+import miniufo.lagrangian.LagrangianSampling;
 import miniufo.lagrangian.LagrangianUtil;
 import miniufo.lagrangian.Record;
 import miniufo.util.Region2D;
@@ -36,6 +38,10 @@ public final class PreprocessDrifterData{
 		path+"GDP/dirfl_10001_jun13.dat"
 	};
 	
+	public static final AttachedMeta UWND=new AttachedMeta("uwnd",4);
+	public static final AttachedMeta VWND=new AttachedMeta("vwnd",5);
+	
+	
 	
 	/** test*/
 	public static void main(String[] args){
@@ -57,9 +63,7 @@ public final class PreprocessDrifterData{
 		if(writeTraj) DiffusionModel.writeTrajAndGS(ls,path,IO);
 		
 		// attaching wind data
-		DiffusionModel.addGridDataToDrifter(ls,
-			DiagnosisFactory.parseFile(path+"NCEP/uvIO.ctl").getDataDescriptor()
-		,"uwnd","vwnd");
+		new LagrangianSampling(ls).sampleVariables(path+"NCEP/uvIO.ctl",UWND,VWND);
 		
 		//splitIntoDroguedAndUndrogued(ls,drog,undr);
 		
@@ -73,7 +77,7 @@ public final class PreprocessDrifterData{
 		
 		// correct wind slip
 		if(correctWindSlip){
-			DiffusionModel.correctWindSlip(ls);
+			DiffusionModel.correctWindSlip(ls,UWND,VWND);
 			//DiffusionModel.correctWindSlip(drog);
 			//DiffusionModel.correctWindSlip(undr);
 			
@@ -115,7 +119,7 @@ public final class PreprocessDrifterData{
 		for(int l=0,L=dr.getTCount();l<L;l++){
 			Record r=dr.getRecord(l); all++;
 			
-			float v=r.getDataValue(3);
+			float v=r.getDataValue(GDPDrifter.DrgOff);
 			
 			if(v==1) drogued++;
 			else if(v==-1) undrogued++;
@@ -127,7 +131,7 @@ public final class PreprocessDrifterData{
 		System.out.println("all "+all);
 		
 		for(GDPDrifter dr:total){
-			GDPDrifter[] split=dr.splitByDrogueOffDate(3);
+			GDPDrifter[] split=dr.splitByDrogueOffDate(GDPDrifter.DrgOff);
 			
 			if(split[0]!=null) drog.add(split[0]);
 			if(split[1]!=null) undr.add(split[1]);
@@ -136,7 +140,7 @@ public final class PreprocessDrifterData{
 		int dcount=0;
 		for(GDPDrifter dr:drog){
 			for(int l=0,L=dr.getTCount();l<L;l++)
-			if(dr.getRecord(l).getDataValue(3)!=1) throw new IllegalArgumentException(dr.toString());
+			if(dr.getRecord(l).getDataValue(GDPDrifter.DrgOff)!=1) throw new IllegalArgumentException(dr.toString());
 			
 			dcount+=dr.getTCount();
 		}
@@ -144,7 +148,7 @@ public final class PreprocessDrifterData{
 		int ucount=0;
 		for(GDPDrifter dr:undr){
 			for(int l=0,L=dr.getTCount();l<L;l++)
-			if(dr.getRecord(l).getDataValue(3)!=-1) throw new IllegalArgumentException(dr.toString());
+			if(dr.getRecord(l).getDataValue(GDPDrifter.DrgOff)!=-1) throw new IllegalArgumentException(dr.toString());
 			
 			ucount+=dr.getTCount();
 		}
@@ -167,8 +171,8 @@ public final class PreprocessDrifterData{
 		for(int l=0,L=dr.getTCount();l<L;l++){
 			Record r=dr.getRecord(l);
 			
-			float u=r.getDataValue(0);
-			float v=r.getDataValue(1);
+			float u=r.getDataValue(GDPDrifter.UVEL);
+			float v=r.getDataValue(GDPDrifter.VVEL);
 			float lon=r.getXPos();
 			float lat=r.getYPos();
 			

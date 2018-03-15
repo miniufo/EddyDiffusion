@@ -68,15 +68,15 @@ public class Interannual{
 		
 		BinningStatistics bs=new BinningStatistics(dd);
 		
-		Variable[] vels=bs.binningData(ls,0,1);
-		Variable[] temp=bs.binningData(ls,2);
+		Variable[] vels=bs.binningData(ls,GDPDrifter.UVEL,GDPDrifter.VVEL);
+		Variable[] temp=bs.binningData(ls,GDPDrifter.Temp);
 		Variable count=bs.binningCount(ls);
 		
 		EulerianStatistics estat=new EulerianStatistics(ls,template,true);
 		estat.removeCyclesByGM(new float[]{1,2},4f/365f,2);
 		
-		Variable[] vels2=bs.binningData(ls,0,1);
-		Variable[] temp2=bs.binningData(ls,2);
+		Variable[] vels2=bs.binningData(ls,GDPDrifter.UVEL,GDPDrifter.VVEL);
+		Variable[] temp2=bs.binningData(ls,GDPDrifter.Temp);
 		
 		CtlDataWriteStream cdws=new CtlDataWriteStream(path+"Drifter.dat");
 		cdws.writeData(ArrayUtil.concatAll(Variable.class,vels,vels2,temp,temp2,new Variable[]{count}));

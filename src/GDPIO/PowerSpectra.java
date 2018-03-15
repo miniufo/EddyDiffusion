@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import diffuse.DiffusionModel;
+import miniufo.lagrangian.AttachedMeta;
 import miniufo.lagrangian.GDPDrifter;
 import miniufo.lagrangian.LagrangianUtil;
 import miniufo.lagrangian.Record;
@@ -81,8 +82,8 @@ public final class PowerSpectra{
 		if(mostlyWithinRegion(seg,lons,lats,lone,late,percentage)){
 			count++;
 			
-			float[][] uspec=getSpectrum(seg,0);
-			float[][] vspec=getSpectrum(seg,1);
+			float[][] uspec=getSpectrum(seg,GDPDrifter.UVEL);
+			float[][] vspec=getSpectrum(seg,GDPDrifter.VVEL);
 			
 			avU.addSample(new Sample(uspec));
 			avV.addSample(new Sample(vspec));
@@ -96,8 +97,8 @@ public final class PowerSpectra{
 		return new Averager[]{avU,avV};
 	}
 	
-	static float[][] getSpectrum(GDPDrifter dr,int idx){
-		float[] data=dr.getAttachedData(idx);
+	static float[][] getSpectrum(GDPDrifter dr,AttachedMeta meta){
+		float[] data=dr.getAttachedData(meta);
 		
 		float[] psd=PowerSpectrum.fftPSDEstimate(data,window,Fs)[0];
 		
@@ -145,12 +146,12 @@ public final class PowerSpectra{
 		
 		int segments=(len-seglen)/offset+1;
 		
-		String[] vars=dr.getDataNames();
+		AttachedMeta[] meta=dr.getAttachedMeta();
 		GDPDrifter[] drs=new GDPDrifter[segments];
 		
 		for(int i=0;i<segments;i++){
-			drs[i]=new GDPDrifter(dr.getID()+"_"+i,seglen,vars.length);
-			drs[i].setAttachedDataNames(vars);
+			drs[i]=new GDPDrifter(dr.getID()+"_"+i,seglen,meta.length);
+			drs[i].setAttachedMeta(meta);
 			
 			for(int j=0,ptr=i*offset;j<seglen;j++) drs[i].addRecord(dr.getRecord(ptr++));
 		}

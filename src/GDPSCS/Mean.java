@@ -73,7 +73,7 @@ public class Mean{
 		Variable[][] amps =estat.cCycleAmplitudesAndPhases(new float[]{1,2},1f/365f);
 		Variable[] ellipse=estat.cVarianceEllipse();
 		Variable v=bs.binningCount(ls);
-		Variable[] seasonal=concatAll(Variable.class,bs.binningSeasonalData(ls,seasons,0,1));
+		Variable[] seasonal=concatAll(Variable.class,bs.binningSeasonalData(ls,seasons,GDPDrifter.UVEL,GDPDrifter.VVEL));
 		Variable[] seaCount=bs.binningSeasonalCount(ls,seasons);
 		
 		estat.removeMeansOfBins();

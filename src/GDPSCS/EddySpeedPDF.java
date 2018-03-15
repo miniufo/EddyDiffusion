@@ -8,6 +8,7 @@ import miniufo.application.statisticsModel.BinningStatistics;
 import miniufo.application.statisticsModel.EulerianStatistics;
 import miniufo.descriptor.DataDescriptor;
 import miniufo.diagnosis.DiagnosisFactory;
+import miniufo.lagrangian.GDPDrifter;
 import miniufo.lagrangian.LagrangianUtil;
 import miniufo.lagrangian.Particle;
 import miniufo.lagrangian.Record;
@@ -106,8 +107,8 @@ public class EddySpeedPDF{
 			
 			for(int l=0,L=p.getTCount();l<L;l++){
 				Record r=p.getRecord(l);
-				r.setData(0,uvelSmth[l]);
-				r.setData(1,vvelSmth[l]);
+				r.setData(GDPDrifter.UVEL,uvelSmth[l]);
+				r.setData(GDPDrifter.VVEL,vvelSmth[l]);
 			}
 		}
 	}

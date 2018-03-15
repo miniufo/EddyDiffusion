@@ -9,6 +9,7 @@ import miniufo.concurrent.ConcurrentUtil;
 import miniufo.descriptor.DataDescriptor;
 import miniufo.diagnosis.DiagnosisFactory;
 import miniufo.lagrangian.LagrangianUtil;
+import miniufo.lagrangian.GDPDrifter;
 import miniufo.lagrangian.LSM1st;
 import miniufo.lagrangian.Particle;
 import miniufo.lagrangian.Record;
@@ -136,8 +137,8 @@ public final class OSCARGenerateLD{
 		for(int l=0;l<p.getTCount();l++){
 			Record r=p.getRecord(l);
 			
-			if(r.getDataValue(0)==originUndef) r.setData(0,Record.undef);
-			if(r.getDataValue(1)==originUndef) r.setData(1,Record.undef);
+			if(r.getDataValue(GDPDrifter.UVEL)==originUndef) r.setData(GDPDrifter.UVEL,Record.undef);
+			if(r.getDataValue(GDPDrifter.VVEL)==originUndef) r.setData(GDPDrifter.VVEL,Record.undef);
 		}
 	}
 	

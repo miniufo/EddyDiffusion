@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import diffuse.DiffusionModel;
+import miniufo.lagrangian.AttachedMeta;
 import miniufo.lagrangian.GDPDrifter;
 import miniufo.lagrangian.LagrangianUtil;
 import miniufo.lagrangian.Record;
@@ -76,8 +77,8 @@ public final class RotarySpectra{
 	}
 	
 	static float[][] getRotarySpectrum(GDPDrifter dr){
-		float[] u=dr.getAttachedData(0);
-		float[] v=dr.getAttachedData(1);
+		float[] u=dr.getAttachedData(GDPDrifter.UVEL);
+		float[] v=dr.getAttachedData(GDPDrifter.VVEL);
 		
 		float[][] cspd=PowerSpectrum.fftCPSDEstimate(u,v,window,Fs);
 		
@@ -127,12 +128,12 @@ public final class RotarySpectra{
 		
 		int segments=(len-seglen)/offset+1;
 		
-		String[] vars=dr.getDataNames();
+		AttachedMeta[] meta=dr.getAttachedMeta();
 		GDPDrifter[] drs=new GDPDrifter[segments];
 		
 		for(int i=0;i<segments;i++){
-			drs[i]=new GDPDrifter(dr.getID()+"_"+i,seglen,vars.length);
-			drs[i].setAttachedDataNames(vars);
+			drs[i]=new GDPDrifter(dr.getID()+"_"+i,seglen,meta.length);
+			drs[i].setAttachedMeta(meta);
 			
 			for(int j=0,ptr=i*offset;j<seglen;j++) drs[i].addRecord(dr.getRecord(ptr++));
 		}

@@ -13,6 +13,7 @@ import miniufo.diagnosis.DiagnosisFactory;
 import miniufo.diagnosis.Variable;
 import miniufo.io.DataIOFactory;
 import miniufo.io.DataWrite;
+import miniufo.lagrangian.GDPDrifter;
 import miniufo.lagrangian.Particle;
 import miniufo.lagrangian.Record;
 import miniufo.util.GridDataFetcher;
@@ -69,7 +70,7 @@ public final class OSCAREddyMeanDecomp{
 			Variable[] emean=estat.cMeansOfBins();
 			Variable[] sbias=estat.cSeasonalSamplingBias();
 			Variable[] abias=estat.cConcentrationAndArrayBias(new float[][]{{20000,0},{0,10000}});
-			Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season2,0,1);
+			Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season2,GDPDrifter.UVEL,GDPDrifter.VVEL);
 			
 			DataWrite dw=DataIOFactory.getDataWrite(template,path+"estat"+m+".dat");
 			dw.writeData(template,
@@ -88,7 +89,7 @@ public final class OSCAREddyMeanDecomp{
 			Variable[] emean=estat.cMeansOfBins();
 			Variable[] sbias=estat.cSeasonalSamplingBias();
 			Variable[] abias=estat.cConcentrationAndArrayBias(new float[][]{{20000,0},{0,10000}});
-			Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season4,0,1);
+			Variable[][] ssnl=estat.cSeasonalMeans(DiffusionModel.season4,GDPDrifter.UVEL,GDPDrifter.VVEL);
 			
 			DataWrite dw=DataIOFactory.getDataWrite(template,path+"estat"+m+".dat");
 			dw.writeData(template,
@@ -182,14 +183,14 @@ public final class OSCAREddyMeanDecomp{
 						float urec=gdsU.fetchXYBuffer(lon,lat,bufU);
 						float vrec=gdsV.fetchXYBuffer(lon,lat,bufV);
 						
-						float ucurr=r.getDataValue(0);	// u current
-						float vcurr=r.getDataValue(1);	// v current
+						float ucurr=r.getDataValue(GDPDrifter.UVEL);	// u current
+						float vcurr=r.getDataValue(GDPDrifter.VVEL);	// v current
 						
 						if(Math.abs(ucurr-urec)>5000) System.out.println("um undef for lon:"+lon+", lat:"+lat);
 						if(Math.abs(vcurr-vrec)>5000) System.out.println("vm undef for lon:"+lon+", lat:"+lat);
 						
-						r.setData(0,ucurr-urec);
-						r.setData(1,vcurr-vrec);
+						r.setData(GDPDrifter.UVEL,ucurr-urec);
+						r.setData(GDPDrifter.VVEL,vcurr-vrec);
 					}
 				}
 				

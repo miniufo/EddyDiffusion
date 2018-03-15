@@ -79,8 +79,8 @@ public class Wavelet{
 		float[] vdata=v.getData()[0][0][0];
 		
 		for(int l=0,L=p.getTCount();l<L;l++){
-			udata[l]=p.getRecord(l).getDataValue(0);
-			vdata[l]=p.getRecord(l).getDataValue(1);
+			udata[l]=p.getRecord(l).getDataValue(GDPDrifter.UVEL);
+			vdata[l]=p.getRecord(l).getDataValue(GDPDrifter.VVEL);
 		}
 		
 		wavelet(u,dd,p.getID());

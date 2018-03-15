@@ -60,7 +60,7 @@ public class ArgoTracking{
 				
 				ArgoFloat af2=af.toDailyData(); if(af2.getTCount()<2) continue;
 				af2.interpolateDailyPosition();
-				af2.cDailyCurrentSpeed();
+				af2.cVelocityByPosition();
 				af2.truncate(20070101000000L,20071231000000L);
 				af2.crossIDLToDiscontinuousRecord();
 				

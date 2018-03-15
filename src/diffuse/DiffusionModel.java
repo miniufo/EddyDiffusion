@@ -20,6 +20,7 @@ import miniufo.diagnosis.MDate;
 import miniufo.diagnosis.Range;
 import miniufo.diagnosis.SpatialModel;
 import miniufo.diagnosis.Variable;
+import miniufo.lagrangian.AttachedMeta;
 import miniufo.lagrangian.GDPDrifter;
 import miniufo.lagrangian.LagrangianUtil;
 import miniufo.lagrangian.MetaData;
@@ -79,7 +80,7 @@ public final class DiffusionModel{
 					if(drftr.getTCount()==0) continue;
 					
 					GDPDrifter[] drs=null;
-					if(drftr.hasUndefRecords(0)){
+					if(drftr.hasUndefRecords(GDPDrifter.UVEL)){
 						System.out.println(drftr.getID()+" has undef velocity record");
 						drs=drftr.splitByUndef();
 						
@@ -152,7 +153,7 @@ public final class DiffusionModel{
 					
 					GDPDrifter[] drs=null;
 					
-					if(drftr.hasUndefRecords(0)){
+					if(drftr.hasUndefRecords(GDPDrifter.UVEL)){
 						System.out.println(drftr.getID()+" has undef velocity record");
 						drs=drftr.splitByUndef();
 						
@@ -210,7 +211,7 @@ public final class DiffusionModel{
 		List<GDPDrifter> drogued=new ArrayList<>();
 		
 		for(GDPDrifter dr:list){
-			GDPDrifter[] segs=dr.splitByDrogueOffDate(3);
+			GDPDrifter[] segs=dr.splitByDrogueOffDate(GDPDrifter.DrgOff);
 			
 			if(segs[0]!=null) drogued.add(segs[0]);
 		}
@@ -282,12 +283,12 @@ public final class DiffusionModel{
 	 * remove a specified signal represented monthly by vname in ctl file
 	 * 
 	 * @param	list		a list of drifter data
-	 * @param	idx			index of the AttachedData
+	 * @param	meta		AttachedMeta
 	 * @param	template	template for the binning
 	 * @param	ctl			ctl file
 	 * @param	vname		variable name in the ctl
 	 */
-	public static void removeSignalFromMonthlyData(List<? extends Particle> ls,int idx,String ctl,String vname){
+	public static void removeSignalFromMonthlyData(List<? extends Particle> ls,AttachedMeta meta,String ctl,String vname){
 		DiagnosisFactory df=DiagnosisFactory.parseFile(ctl);
 		DataDescriptor grid=df.getDataDescriptor();
 		
@@ -318,8 +319,8 @@ public final class DiffusionModel{
 				for(Record r:rs[j][i])
 				for(int l=0,L=times.length;l<L;l++)
 				if(r.getTime()==times[l]){
-					float ov=r.getDataValue(idx);
-					if(ov!=Record.undef) r.setData(idx,ov-daily4[l]);
+					float ov=r.getDataValue(meta);
+					if(ov!=Record.undef) r.setData(meta,ov-daily4[l]);
 					break;
 				}
 			}
@@ -329,79 +330,26 @@ public final class DiffusionModel{
 	
 	
 	/**
-	 * bilinearly interpolated gridded data onto drifter's time and position
-	 * 
-	 * @param	list	a list of drifter data
-	 * @param	dd		a data descriptor
-	 * @param	vnames	names of variables to be interpolated
-	 */
-	public static void addGridDataToDrifter(List<? extends Particle> ls,DataDescriptor dd,String... vnames){
-		if(vnames==null||vnames.length==0)
-		throw new IllegalArgumentException("no valid variable name");
-		
-		System.out.print("\nstart adding gridded data");
-		
-		int vlen=vnames.length;
-		float[] undefs=new float[vlen];
-		GridDataFetcher[] gds=new GridDataFetcher[vlen];
-		
-		for(int m=0;m<vlen;m++){
-			undefs[m]=dd.getUndef(vnames[m]);
-			gds[m]=new GridDataFetcher(dd);
-		}
-		
-		for(int l=0,L=dd.getTCount();l<L;l++){
-			long time=dd.getTDef().getSamples()[l].getLongTime();
-			
-			Variable[] bufs=new Variable[vlen];
-			
-			for(int m=0;m<vlen;m++) bufs[m]=gds[m].prepareXYBuffer(vnames[m],l+1,1);
-			
-			for(Particle dftr:ls){
-				for(int ll=0,LL=dftr.getTCount();ll<LL;ll++){
-					Record r=dftr.getRecord(ll);
-					
-					if(r.getTime()==time){
-						float lon=r.getXPos();
-						float lat=r.getYPos();
-						
-						for(int m=0;m<vlen;m++){
-							float data=gds[m].fetchXYBuffer(lon,lat,bufs[m]);
-							r.setData(m+4,data==undefs[m]?Record.undef:data);
-						}
-					}
-				}
-				
-				dftr.setAttachedDataNames("uvel","vvel","temp","drogueState","uwnd","vwnd");
-			}
-			
-			if(l%(365*4)==0) System.out.print(".");
-		}
-		
-		System.out.println("\n");
-	}
-	
-	/**
 	 * mapping the wind data to Ekman current
 	 * Reference: Niiler et al. 2003, GRL
 	 * 
 	 * @param	list	a list of drifter data
 	 */
-	public static void mappingEkmanCurrent(List<? extends Particle> ls){
+	public static void mappingEkmanCurrent(List<? extends Particle> ls,AttachedMeta uwnd,AttachedMeta vwnd,AttachedMeta uek,AttachedMeta vek){
 		for(Particle dr:ls){
 			for(int l=0,L=dr.getTCount();l<L;l++){
 				Record r=dr.getRecord(l);
 				
-				float uwind=r.getDataValue(4);
-				float vwind=r.getDataValue(5);
+				float uwind=r.getDataValue(uwnd);
+				float vwind=r.getDataValue(vwnd);
 				
 				float[] ek=cEkmanCurrent(uwind,vwind,r.getYPos());
 				
-				r.setData(6,ek[0]);
-				r.setData(7,ek[1]);
+				r.setData(uek,ek[0]);
+				r.setData(vek,ek[1]);
 			}
 			
-			dr.setAttachedDataNames(ArrayUtil.concatAll(String.class,dr.getDataNames(),"Uek","Vek"));
+			dr.setAttachedMeta(ArrayUtil.concatAll(AttachedMeta.class,dr.getAttachedMeta(),uwnd,vwnd,uek,vek));
 		}
 	}
 	
@@ -440,9 +388,9 @@ public final class DiffusionModel{
 						float uwind=gdsU.fetchXYBuffer(lon,lat,bufU);
 						float vwind=gdsV.fetchXYBuffer(lon,lat,bufV);
 						
-						float ucurr=r.getDataValue(0);	// u current
-						float vcurr=r.getDataValue(1);	// v current
-						float drgSt=r.getDataValue(3);	// drogue state
+						float ucurr=r.getDataValue(GDPDrifter.UVEL);	// u current
+						float vcurr=r.getDataValue(GDPDrifter.VVEL);	// v current
+						float drgSt=r.getDataValue(GDPDrifter.DrgOff);	// drogue state
 						
 						float[] slip=null;
 						
@@ -452,12 +400,12 @@ public final class DiffusionModel{
 							"unknown drogue state ("+drgSt+"), 1 for drogued and -1 for undrogued"
 						);
 						
-						r.setData(0,ucurr-slip[0]);
-						r.setData(1,vcurr-slip[1]);
+						r.setData(GDPDrifter.UVEL,ucurr-slip[0]);
+						r.setData(GDPDrifter.VVEL,vcurr-slip[1]);
 					}
 				}
 				
-				dftr.setAttachedDataNames("uvel","vvel","temp","drogueState");
+				dftr.setAttachedMeta(GDPDrifter.UVEL,GDPDrifter.VVEL,GDPDrifter.DrgOff);
 			}
 			
 			if(l%(365*4)==0) System.out.print(".");
@@ -466,7 +414,7 @@ public final class DiffusionModel{
 		System.out.println("\n");
 	}
 	
-	public static void correctWindSlip(List<? extends Particle> ls){
+	public static void correctWindSlip(List<? extends Particle> ls,AttachedMeta uwnd,AttachedMeta vwnd){
 		float CoeffDrog=7e-4f,CoeffUndr=1.64e-2f;
 		
 		System.out.println("\nstart correcting wind-slip drifter data" +
@@ -477,11 +425,11 @@ public final class DiffusionModel{
 			for(int ll=0,LL=dftr.getTCount();ll<LL;ll++){
 				Record r=dftr.getRecord(ll);
 				
-				float ucurr=r.getDataValue(0);	// u current
-				float vcurr=r.getDataValue(1);	// v current
-				float drgSt=r.getDataValue(3);	// drogue state
-				float uwind=r.getDataValue(4);	// u wind
-				float vwind=r.getDataValue(5);	// v wind
+				float ucurr=r.getDataValue(GDPDrifter.UVEL);	// u current
+				float vcurr=r.getDataValue(GDPDrifter.VVEL);	// v current
+				float drgSt=r.getDataValue(GDPDrifter.Temp);	// drogue state
+				float uwind=r.getDataValue(uwnd);	// u wind
+				float vwind=r.getDataValue(vwnd);	// v wind
 				
 				float[] slip=null;
 				
@@ -491,11 +439,11 @@ public final class DiffusionModel{
 					"unknown drogue state ("+drgSt+"), 1 for drogued and -1 for undrogued"
 				);
 				
-				r.setData(0,ucurr-slip[0]);
-				r.setData(1,vcurr-slip[1]);
+				r.setData(GDPDrifter.UVEL,ucurr-slip[0]);
+				r.setData(GDPDrifter.VVEL,vcurr-slip[1]);
 			}
 			
-			dftr.setAttachedDataNames("uvel","vvel","temp","drogueState","uwind","vwind");
+			dftr.setAttachedMeta(GDPDrifter.UVEL,GDPDrifter.VVEL,GDPDrifter.Temp,GDPDrifter.DrgOff,uwnd,vwnd);
 		}
 		
 		System.out.println("finished\n");
@@ -505,24 +453,26 @@ public final class DiffusionModel{
 	/**
 	 * project the current in along- and cross-stream components
 	 * 
-	 * @param	dd		DataDescriptor
-	 * @param	list	a list of drifter data
+	 * @param	dd	DataDescriptor
+	 * @param	ls	a list of drifter data
+	 * @param	us	along-stream component
+	 * @param	vn	cross-stream component
 	 */
-	public static void projectCurrentInAlongAndCrossStream(DataDescriptor dd,List<? extends Particle> list){
-		Variable[] mcurrent=new BinningStatistics(dd).binningData(list,0,1);
+	public static void projectCurrentAlongAndCrossStream(DataDescriptor dd,List<? extends Particle> ls,AttachedMeta us,AttachedMeta vn){
+		Variable[] mcurrent=new BinningStatistics(dd).binningData(ls,us,vn);
 		
 		float[][] udata=mcurrent[0].getData()[0][0];
 		float[][] vdata=mcurrent[1].getData()[0][0];
 		
-		for(Particle dr:list){
+		for(Particle dr:ls){
 			for(int l=0,L=dr.getTCount();l<L;l++){
 				Record r=dr.getRecord(l);
 				
 				int itag=dd.getXNum(r.getXPos());
 				int jtag=dd.getYNum(r.getYPos());
 				
-				float u=r.getDataValue(0);
-				float v=r.getDataValue(1);
+				float u=r.getDataValue(GDPDrifter.UVEL);
+				float v=r.getDataValue(GDPDrifter.VVEL);
 				
 				float um=udata[jtag][itag];
 				float vm=vdata[jtag][itag];
@@ -530,16 +480,16 @@ public final class DiffusionModel{
 				if(um!=Record.undef&&vm!=Record.undef){
 					float[] ac=CoordinateTransformation.projectToNaturalCoords(u,v,um,vm);
 					
-					r.setData(3,ac[0]);
-					r.setData(4,ac[1]);
+					r.setData(us,ac[0]);
+					r.setData(vn,ac[1]);
 					
 				}else{
-					r.setData(3,Record.undef);
-					r.setData(4,Record.undef);
+					r.setData(us,Record.undef);
+					r.setData(vn,Record.undef);
 				}
 			}
 			
-			dr.setAttachedDataNames(ArrayUtil.concatAll(String.class,dr.getDataNames(),"als","acs"));
+			dr.setAttachedMeta(ArrayUtil.concatAll(AttachedMeta.class,dr.getAttachedMeta(),us,vn));
 		}
 	}
 	
@@ -770,8 +720,8 @@ public final class DiffusionModel{
 						corrected=true;
 						Record r=drftr.getRecord(l);
 						
-						r.setData(0,Record.undef);
-						r.setData(1,Record.undef);
+						r.setData(GDPDrifter.UVEL,Record.undef);
+						r.setData(GDPDrifter.VVEL,Record.undef);
 					}
 				}
 				
@@ -790,8 +740,8 @@ public final class DiffusionModel{
 						corrected=true;
 						Record r=drftr.getRecord(l);
 						
-						r.setData(0,Record.undef);
-						r.setData(1,Record.undef);
+						r.setData(GDPDrifter.UVEL,Record.undef);
+						r.setData(GDPDrifter.VVEL,Record.undef);
 					}
 				}
 				
@@ -810,8 +760,8 @@ public final class DiffusionModel{
 						corrected=true;
 						Record r=drftr.getRecord(l);
 						
-						r.setData(0,Record.undef);
-						r.setData(1,Record.undef);
+						r.setData(GDPDrifter.UVEL,Record.undef);
+						r.setData(GDPDrifter.VVEL,Record.undef);
 					}
 				}
 				
@@ -830,8 +780,8 @@ public final class DiffusionModel{
 						corrected=true;
 						Record r=drftr.getRecord(l);
 						
-						r.setData(0,Record.undef);
-						r.setData(1,Record.undef);
+						r.setData(GDPDrifter.UVEL,Record.undef);
+						r.setData(GDPDrifter.VVEL,Record.undef);
 					}
 				}
 				
@@ -850,8 +800,8 @@ public final class DiffusionModel{
 						corrected=true;
 						Record r=drftr.getRecord(l);
 						
-						r.setData(0,Record.undef);
-						r.setData(1,Record.undef);
+						r.setData(GDPDrifter.UVEL,Record.undef);
+						r.setData(GDPDrifter.VVEL,Record.undef);
 					}
 				}
 				
@@ -870,8 +820,8 @@ public final class DiffusionModel{
 						corrected=true;
 						Record r=drftr.getRecord(l);
 						
-						r.setData(0,Record.undef);
-						r.setData(1,Record.undef);
+						r.setData(GDPDrifter.UVEL,Record.undef);
+						r.setData(GDPDrifter.VVEL,Record.undef);
 					}
 				}
 				
@@ -890,8 +840,8 @@ public final class DiffusionModel{
 						corrected=true;
 						Record r=drftr.getRecord(l);
 						
-						r.setData(0,Record.undef);
-						r.setData(1,Record.undef);
+						r.setData(GDPDrifter.UVEL,Record.undef);
+						r.setData(GDPDrifter.VVEL,Record.undef);
 					}
 				}
 				
@@ -910,8 +860,8 @@ public final class DiffusionModel{
 						corrected=true;
 						Record r=drftr.getRecord(l);
 						
-						r.setData(0,Record.undef);
-						r.setData(1,Record.undef);
+						r.setData(GDPDrifter.UVEL,Record.undef);
+						r.setData(GDPDrifter.VVEL,Record.undef);
 					}
 				}
 				
@@ -930,8 +880,8 @@ public final class DiffusionModel{
 						corrected=true;
 						Record r=drftr.getRecord(l);
 						
-						r.setData(0,Record.undef);
-						r.setData(1,Record.undef);
+						r.setData(GDPDrifter.UVEL,Record.undef);
+						r.setData(GDPDrifter.VVEL,Record.undef);
 					}
 				}
 				
@@ -950,8 +900,8 @@ public final class DiffusionModel{
 						corrected=true;
 						Record r=drftr.getRecord(l);
 						
-						r.setData(0,Record.undef);
-						r.setData(1,Record.undef);
+						r.setData(GDPDrifter.UVEL,Record.undef);
+						r.setData(GDPDrifter.VVEL,Record.undef);
 					}
 				}
 				
@@ -970,8 +920,8 @@ public final class DiffusionModel{
 						corrected=true;
 						Record r=drftr.getRecord(l);
 						
-						r.setData(0,Record.undef);
-						r.setData(1,Record.undef);
+						r.setData(GDPDrifter.UVEL,Record.undef);
+						r.setData(GDPDrifter.VVEL,Record.undef);
 					}
 				}
 				
@@ -990,8 +940,8 @@ public final class DiffusionModel{
 						corrected=true;
 						Record r=drftr.getRecord(l);
 						
-						r.setData(0,Record.undef);
-						r.setData(1,Record.undef);
+						r.setData(GDPDrifter.UVEL,Record.undef);
+						r.setData(GDPDrifter.VVEL,Record.undef);
 					}
 				}
 				

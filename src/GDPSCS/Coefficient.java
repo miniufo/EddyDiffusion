@@ -59,7 +59,7 @@ public class Coefficient{
 					
 					GDPDrifter[] drs=null;
 					
-					if(drftr.hasUndefRecords(0)){
+					if(drftr.hasUndefRecords(GDPDrifter.UVEL)){
 						System.out.println(drftr.getID()+" has undef velocity record");
 						drs=drftr.splitByUndef();
 						
